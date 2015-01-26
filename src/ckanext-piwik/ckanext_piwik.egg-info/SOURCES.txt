@@ -1,0 +1,12 @@
+setup.py
+ckanext/__init__.py
+ckanext/piwik/__init__.py
+ckanext/piwik/controller.py
+ckanext/piwik/plugin.py
+ckanext_piwik.egg-info/PKG-INFO
+ckanext_piwik.egg-info/SOURCES.txt
+ckanext_piwik.egg-info/dependency_links.txt
+ckanext_piwik.egg-info/entry_points.txt
+ckanext_piwik.egg-info/namespace_packages.txt
+ckanext_piwik.egg-info/not-zip-safe
+ckanext_piwik.egg-info/top_level.txt

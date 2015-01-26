@@ -1,0 +1,23 @@
+{% set tags = h.get_facet_items_dict('tags', limit=3) %}
+
+
+
+
+  <div class="popular-tags">
+    <div class="popular-tags-title">
+        <h1>Popular Tags</h1>
+    </div>
+    <div class="popular-tags-content">
+        {% for tag in tags %}
+            <div class="popular-tag">
+                <h1 title='{{ tag.display_name }}'>
+                    <a href="{% url_for controller='package', action='search', tags=tag.name %}">{{ tag.display_name }}</a>
+                </h1>
+            </div>
+            <div class="popular-tag-bg">
+            </div>
+        {% endfor %}
+        
+    </div>
+  </div>
+

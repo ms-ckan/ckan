@@ -1,0 +1,88 @@
+{% block header_wrapper %}
+<header class="account-masthead">
+    <div class="container"></div>
+</header>
+
+<header class="masthead">
+  {% block header_debug %}
+    {% if g.debug and not g.debug_supress_header %}
+      <div class="debug">Controller : {{ c.controller }}<br/>Action : {{ c.action }}</div>
+    {% endif %}
+  {% endblock %}
+  <div class="container">
+    {# The .header-image class hides the main text and uses image replacement for the title #}
+    <hgroup class="{{ g.header_class }}">
+
+      {% block header_logo %}
+        {% if g.site_logo %}
+          <a class="logo" href="{{ h.url('home') }}"><img src="{{ h.url_for_static(g.site_logo) }}" alt="{{ g.site_title }} Logo" title="{{ g.site_title }} Logo" /></a>
+        {% else %}
+          <h1>
+            <a href="{{ h.url('home') }}">{{ g.site_title }}</a>
+          </h1>
+          {% if g.site_description %}<h2>{{ g.site_description }}</h2>{% endif %}
+        {% endif %}
+      {% endblock %}
+
+    </hgroup>
+
+    <div class="content">
+
+      {% block header_site_navigation %}
+        <nav class="section navigation">
+          <ul class="nav nav-pills">
+            {% block header_site_navigation_tabs %}
+              {{ h.build_nav_main(('organizations_index', _('Find Data')),('about', _('Why CivicData?')),('contact', _('Contact Us')),) }}
+
+              {% if c.userobj %}
+                  <li>
+                      <div class="btn-group pull-right" data-module="me" data-me="{{ c.userobj.id }}" id="userobj">
+                        <button class="btn dropdown-toggle" data-toggle="dropdown">{{ c.userobj.display_name }}
+                            <span class="caret"></span>
+                            {{ h.gravatar((c.userobj.email_hash if c and c.userobj else ''), size=22) }}
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li class="notifications">
+                              <a href="{{ h.url_for(controller='user', action='dashboard') }}">
+                                <i class="icon-dashboard"></i> {{ _('Dashboard') }}
+                              </a>
+                            </li>
+
+                            <li>
+                              <a href="{{ h.url_for(controller='user', action='read', id=c.userobj.name) }}"><i class="icon-user"></i> {{ _('View profile') }}</a>
+                            </li>
+                            <li>
+                                <a href="{{ h.url_for(controller='user', action='edit', id=c.userobj.name) }}"><i class="icon-cog"></i> {{ _('Edit settings') }}</a>
+                            </li>
+                            <li class="divider"></li>
+                              {% if c.userobj.sysadmin %}
+                              <li>
+                                <a href="{{ h.url_for(controller='admin', action='index') }}"><i class="icon-legal"></i> {{ _('Sysadmin settings') }}</a>
+                              </li>
+                            {% endif %}
+                            <li>
+                                <a href="{{ h.url_for('/user/_logout') }}"><i class="icon-signout"></i> {{ _('Log out') }}</a>
+                            </li>
+                        </ul>
+                    </div>
+                  </li>
+              {% else %}
+                  {{ h.build_nav_main(('login', _('Log in')),) }}
+
+                  {% if h.check_access('user_create') %}
+                    {{ h.build_nav_main(('register', _('Register')),) }}
+                  {% endif %}
+              {% endif %}
+            {% endblock %}
+          </ul>
+        </nav>
+      {% endblock %}
+
+      {% block header_site_search %}
+
+      {% endblock %}
+
+    </div>
+  </div>
+</header>
+{% endblock %}

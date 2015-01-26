@@ -1,0 +1,96 @@
+{% extends "page.html" %}
+{% block breadcrumb_content %}
+  <li class="active">{{ 'Piwik' }}</li>
+{% endblock %}
+
+{% block primary_content %}
+  <style type="text/css">
+  #content {
+    width: 1300px;
+  }
+  #content>.wrapper>.primary {
+    width: 1078px;
+  }
+    .widgetIframe iframe {
+      width: 100%;
+      height: 100%;
+      min-height: 700px;
+      overflow-y: auto;
+      border: 0px;
+      margin: 0px;
+    }
+  </style>
+  {% block scripts %}
+    {{ super() }}
+    {% resource "vendor/block_html5_shim" %}
+    <script type="text/javascript" src="/fanstatic/vendor/jquery.js"></script>
+  {% endblock %}
+  <script type="text/javascript">
+    var widgetList = [
+      "&moduleToWidgetize=VisitsSummary&actionToWidgetize=index",
+      "&moduleToWidgetize=UserCountryMap&actionToWidgetize=visitorMap",
+      "&moduleToWidgetize=VisitTime&actionToWidgetize=getVisitInformationPerLocalTime",
+      "&moduleToWidgetize=VisitorInterest&actionToWidgetize=getNumberOfVisitsPerPage",
+      "&moduleToWidgetize=VisitorInterest&actionToWidgetize=getNumberOfVisitsByVisitCount",
+      "&moduleToWidgetize=UserSettings&actionToWidgetize=getConfiguration",
+      "&moduleToWidgetize=UserSettings&actionToWidgetize=getOS",
+      "&moduleToWidgetize=DevicesDetection&actionToWidgetize=getType",
+      "&moduleToWidgetize=UserSettings&actionToWidgetize=getBrowserVersion",
+      "&moduleToWidgetize=Referrers&actionToWidgetize=getReferrerType",
+      "&moduleToWidgetize=Actions&actionToWidgetize=getPageUrls"
+    ];
+
+    $(function(){
+      // $("#piwik-visits-summary>div>iframe").css("height","800px");
+      $(".nav-item").click(function(){
+        $(".nav-simple>.active").removeClass("active");
+        $(this).addClass("active");
+        $("#tabs>.active").removeClass("active");
+
+        var href = $($(this).find("a")[0]).attr("href");
+        location.hash = href;
+        
+        if($(href).length > 0){
+          $(href).addClass("active");
+        } else {
+          var src = '{{c.piwik_host}}/index.php?module=Widgetize&action=iframe&token_auth={{c.piwik_token_auth}}&idSite={{c.piwik_idsite}}&period={{c.piwik_period}}&date={{c.piwik_date}}&disableLink=1&widget=1' + widgetList[$(this).index()];
+          var html = '<section id="' + href.slice(1) + '" class="module-content tab-content active">' +
+                     '   <div class="widgetIframe">' +
+                     '     <iframe scrolling="yes" src="' + src + '"></iframe>' +
+                     '   </div>' +
+                     '</section>';
+
+          $("#tabs").append(html);
+        };
+      });
+    });
+  </script>
+  <article id="tabs" class="module">
+    <section id="piwik-visits-summary" class="module-content tab-content active">
+      <div class="widgetIframe">
+        <iframe scrolling="yes" src="{{c.piwik_host}}/index.php?module=Widgetize&action=iframe&widget=1&moduleToWidgetize=VisitsSummary&actionToWidgetize=index&token_auth={{c.piwik_token_auth}}&idSite={{c.piwik_idsite}}&period=week&date=today&disableLink=1&widget=1"></iframe>
+      </div>
+    </section>
+  </article>
+{% endblock %}
+
+{% block secondary_content %}
+  <section class="module module-narrow">
+    <h2 class="module-heading"><i class="icon-bar-chart icon-medium"></i> {{ _('Statistics Menu') }}</h2>
+    <nav data-module="piwik-nav">
+      <ul class="unstyled nav nav-simple">
+        <li class="nav-item active"><a class="nav-item-a" href="#piwik-visits-summary" data-toggle="tab">{{ _('Visits Overview') }}</a></li>
+        <li class="nav-item"><a class="nav-item-a" href="#piwik-visitor-map" data-toggle="tab">{{ _('Visitor Map') }}</a></li>
+        <li class="nav-item"><a class="nav-item-a" href="#piwik-get-visit-information-per-localtime" data-toggle="tab">{{ _('Visits by Local Time') }}</a></li>
+        <li class="nav-item"><a class="nav-item-a" href="#piwik-pv" data-toggle="tab">{{ _('Pages per Visit') }}</a></li>
+        <li class="nav-item"><a class="nav-item-a" href="#piwik-get-number-of-visits-by-visit-count" data-toggle="tab">{{ _('Visits by Visit Number') }}</a></li>
+        <li class="nav-item"><a class="nav-item-a" href="#piwik-get-user-settings-conf" data-toggle="tab">{{ _('Visitor Configuration') }}</a></li>
+        <li class="nav-item"><a class="nav-item-a" href="#piwik-get-os" data-toggle="tab">{{ _('Operating System') }}</a></li>
+        <li class="nav-item"><a class="nav-item-a" href="#piwik-get-device-types" data-toggle="tab">{{ _('Device type') }}</a></li>
+        <li class="nav-item"><a class="nav-item-a" href="#piwik-get-browser-version" data-toggle="tab">{{ _('Browser Version') }}</a></li>
+        <li class="nav-item"><a class="nav-item-a" href="#piwik-get-referrer-type" data-toggle="tab">{{ _('Referrers') }}</a></li>
+        <li class="nav-item"><a class="nav-item-a" href="#piwik-get-page-urls" data-toggle="tab">{{ _('Page Actions') }}</a></li>
+      </ul>
+    </nav>
+  </section>
+{% endblock %}

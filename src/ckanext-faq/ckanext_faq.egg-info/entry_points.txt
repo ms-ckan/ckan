@@ -1,0 +1,4 @@
+
+        [ckan.plugins]
+        faq=ckanext.faq.plugin:FAQPlugin
+    

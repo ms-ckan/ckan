@@ -1,0 +1,203 @@
+{% extends "faq/page.html" %}
+
+{% block subtitle %}Frequently Asked Questions{% endblock %}
+
+{% block breadcrumb_content %}
+<li class="active"><a href="/en/faqs">FAQs</a></li>
+{% endblock %}
+
+
+{%- block scripts %}
+{{super()}}
+<script type="text/javascript" src="/fanstatic/vendor/:version:2013-10-08T09:29:43/jquery.min.js"></script>
+<script type="text/javascript" src="/scripts/faq.min.js"></script>
+{% endblock -%}
+
+{% block container %}
+<div class="container" style="min-height: 600px;">
+
+    <div class="row" style="margin-left: 0;">
+
+        {# Using Pattern
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="icon-ok-circle icon-size"></i>
+                The Question Title
+            </div>
+
+            <div class="panel-body">
+                <p>Content as a paragraph</p>
+                <h4>SubTitle</h4>
+                <ul>
+                    <li>Items</li>
+                </ul>
+            </div>
+        </div>
+        #}
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="icon-ok-circle icon-size"></i> How do I use CivicData.com? </div>
+            <div class="panel-body">
+                <p>
+                    You can search <a href="http://www.civicdata.com">CivicData.com</a> from its catalog of government data
+                    from across the Federal Government. Once in the catalog, you can search or browse for data by entering
+                    key words in the search box or selecting the type of data you are looking for on the left side.
+                </p>
+                <p>
+                    Once you find a dataset or tool of interest, click on the title and you will be taken to a page
+                    with more details on that specific dataset or tool. Some datasets are downloadable,
+                    while others are links to web sites or apps that help you access or use the data.
+                    Datasets can be searched by key word, format, community, organization type, and or organization.
+                </p>
+                <p>
+                    Please note that by accessing datasets or tools offered on <a href="http://www.civicdata.com">CivicData.com</a>, you agree to the Data Policy,
+                    which you should read before accessing any data. If there are additional datasets that you would
+                    like to see included on this site, please suggest more datasets here.
+                </p>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="icon-ok-circle icon-size"></i> How are the datasets in CivicData.com collected?
+            </div>
+            <div class="panel-body">
+                <p>
+                  Under the terms of President Obama’s Executive Order and the Administration’s Open Data Policy,
+                    all newly-generated government data are required to be made available in open, machine-readable
+                    formats, while continuing to ensure privacy and security.
+                </p>
+
+                <h4>Federal agencies are also required to:</h4>
+                <ul>
+                    <li><strong>Create a Single Agency Data Inventory.</strong> Agencies are required to catalogue their data assets,
+                        just like they would inventory computers or desk chairs, to better manage and use these resources.
+                    </li>
+                    <li><strong>Publish a Public Data Listing.</strong> On their agency.gov/data pages,
+                        agencies are required to publish a list of their data assets that are public, or could be made public.
+                    </li>
+                    <li><strong>Develop New Public Feedback Mechanisms.</strong> Agencies are required to set up
+                        feedback mechanisms to engage the public about where agencies should focus open data efforts,
+                        such as facilitating and prioritizing the release of datasets. Agencies are also required to
+                        identify public points of contacts for agency datasets.
+                    </li>
+                </ul>
+
+                <p>
+                    Agency Public Data Listings, on agency.gov/data pages, are harvested into the central catalog
+                    for CivicData.gov.  Each agency is responsible for its own data.
+                </p>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="icon-ok-circle icon-size"></i> What standards were used to develop the metadata displayed on CivicData.com?
+            </div>
+            <div class="panel-body">
+                <p>
+                    CivicData.com follows the Project Open Data schema – a set of required fields (Title, Description,
+                    Tags, Last Update, Publisher, Contact Name, etc.) for every data set displayed on CivicData.com.
+                </p>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="icon-ok-circle icon-size"></i> Will my comments be read?
+            </div>
+            <div class="panel-body">
+                <p>
+                    Yes. Emails that you send will be sent to the relevant agency for review and/or responded to
+                    by the CivicData.com team.
+                </p>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="icon-ok-circle icon-size"></i> What if I am having difficulty downloading a dataset from the catalog?
+            </div>
+            <div class="panel-body">
+                <p>
+                    Some web browser configurations, particularly those that are designed for high-security computing
+                    environments, can interfere with access to certain datasets from the catalog.
+                    This is most commonly related to government websites that use security certificates
+                    and end user browsers that are not configured to recognize those certificates as being authoritative.
+                    If you are having difficulty downloading one or more datasets from the <a href="http://www.civicdata.com">CivicData.com</a> catalog,
+                    please contact your local IT support staff to determine whether browser configuration issues
+                    can be addressed for your workstation.
+                </p>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="icon-ok-circle icon-size"></i> How does CivicData.com maintain accessibility?
+            </div>
+            <div class="panel-body">
+                <p>
+                    The commitment to accessibility for all is reflected on this site in our efforts to ensure all
+                    functionality and all content are accessible to all CivicData.com users. The CivicData.com site is
+                    routinely tested for compliance with Section 508 of the Rehabilitation Act using a technical
+                    standards checklist, in-depth testing with screen readers, policy experts,
+                    and people with disabilities. For more information on Section 508 technical standards,
+                    please visit <a href="http://www.Section508.gov">www.Section508.gov</a>.
+                </p>
+
+                <p>
+                    In addition, the CivicData.com site is also routinely reviewed for alignment with the latest
+                    Web Accessibility Initiative Guidelines for W3C. The Web Accessibility Initiative Guidelines
+                    at <a href="http://www.W3.org/WAI/">www.W3.org/WAI/</a> define how browsers, media players,
+                    and other “user agents” support people with disabilities and work assistive technologies.
+                </p>
+
+                <p>
+                    Images on the site contain “alt tags”, which aid users who listen to the content of the site
+                    by using a screen reader, rather than reading the site. Likewise, a “skip to” link provides these
+                    users with a method for bypassing the header and going directly to the main content each time a
+                    page is accessed. Text transcripts accompany audio clips, and closed captioning is available on videos.
+                </p>
+
+                <p>
+                    Users can get information regarding the accessibility of Adobe Portable Document Format (PDF)
+                    files from the Access Adobe website.
+                </p>
+
+                <p>
+                    The CivicData.com website is being updated frequently to make it as accessible as possible.
+                    If you use assistive technology (such as a screen reader, eye tracking device,
+                    or voice recognition software) and have difficulty accessing information on CivicData.com,
+                    please contact us and provide the URL (web address) of the material you tried to access,
+                    the problem you experienced, and your contact information. A CivicData.com team member will contact you
+                    and attempt to provide the information you are seeking.
+                </p>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="icon-ok-circle icon-size"></i> How can I get in contact?
+            </div>
+            <div class="panel-body">
+                <p>
+                    For technical queries, the public mailing lists are a good source of advice.
+                    The development list is used by the core CKAN developers as well as the wider CKAN community,
+                    and questions are usually answered quickly. If you use IRC you can also drop into the #ckan room
+                    on the Freenode IRC channel, where there are often people who can help with technical questions.
+                    For enquiries about the Open Knowledge Foundation support, hosting and other services,
+                    please e-mail <a href="mailto:info@ckan.org">info@ckan.org</a>.
+                </p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</div>
+
+
+
+{% endblock %}

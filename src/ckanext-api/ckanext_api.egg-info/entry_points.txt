@@ -1,0 +1,7 @@
+
+        [ckan.plugins]
+        api = ckanext.api.plugin:APIPlugin
+
+        [paste.paster_command]
+        initdb = ckanext.api.command:InitDB
+    

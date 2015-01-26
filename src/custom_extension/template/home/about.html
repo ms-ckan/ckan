@@ -1,0 +1,28 @@
+{% extends "page_new.html" %}
+
+{% block subtitle %}{{ _('Why CivicData?') }}{% endblock %}
+
+{% block breadcrumb_content %}
+  <li class="active">{{ _('Why CivicData?')}}</li>
+{% endblock %}
+
+{% block primary %}
+  <article class="module">
+    <div class="module-content">
+      {% block about %}
+        {% if g.site_about %}
+          {{ h.render_markdown(g.site_about) }}
+        {% else %}
+            <header class="about-heading">
+              <h1  class="text-blue">{{ _('CivicData is a free open data solution created by Accela, a leading provider of civic engagement solutions for government agencies.') }}</h1>
+              </header>
+ 	     <div class="about-body">
+                {% snippet 'home/snippets/about_text.html' %}
+              </div>
+        {% endif %}
+      {% endblock %}
+    </div>
+  </article>
+{% endblock %}
+
+{% block secondary %}{% endblock %}

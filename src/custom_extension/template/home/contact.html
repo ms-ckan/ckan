@@ -1,0 +1,26 @@
+{% extends "page_new.html" %}
+
+{% block subtitle %}{{ _('Contact Us') }}{% endblock %}
+
+{% block breadcrumb_content %}
+  <li class="active">{{ _('Contact Us') }}</li>
+{% endblock %}
+
+{% block primary %}
+  <article class="module">
+    <div class="module-content">
+      {% block about %}
+        {% if g.site_about %}
+          {{ h.render_markdown(g.site_about) }}
+        {% else %}
+            <header class="about-heading" style="margin-bottom: 50px;">
+             <h1 class="text-blue">{{ _('If you have questions about CivicData, please submit the form below or call us (888) 722-2352') }}</h1>
+            </header>
+          {% snippet 'home/snippets/contact_text.html' %}
+        {% endif %}
+      {% endblock %}
+    </div>
+  </article>
+{% endblock %}
+
+{% block secondary %}{% endblock %}

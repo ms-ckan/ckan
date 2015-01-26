@@ -1,0 +1,15 @@
+setup.py
+ckanext/__init__.py
+ckanext/api/__init__.py
+ckanext/api/api_model.py
+ckanext/api/command.py
+ckanext/api/controller.py
+ckanext/api/mail.py
+ckanext/api/plugin.py
+ckanext_api.egg-info/PKG-INFO
+ckanext_api.egg-info/SOURCES.txt
+ckanext_api.egg-info/dependency_links.txt
+ckanext_api.egg-info/entry_points.txt
+ckanext_api.egg-info/namespace_packages.txt
+ckanext_api.egg-info/not-zip-safe
+ckanext_api.egg-info/top_level.txt

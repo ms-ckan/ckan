@@ -1,0 +1,20 @@
+{% set tags = h.get_facet_items_dict('tags', limit=3) %}
+{% set placeholder = _('e.g Building Permits') %}
+{% set site_stats = h.get_site_statistics() %}
+
+
+<div class="module module-browse module-search module-narrow module-shallow box">
+  <form class="module-content search-form" method="get" action="{% url_for controller='package', action='search' %}">
+    <h3 class="heading">{{ _("Find data") }}</h3>
+    <h1>{{ _("Find out more about working with") }}</h1>
+    <h1>{{ _("open data by exploring these") }}</h1>
+    <h1>{{ _("resources:") }}</h1>
+    <div class="search-input control-group search-giant">
+      <input type="text" class="search" name="q" value="" autocomplete="off" placeholder="{{ placeholder }}" />
+      <button type="submit">
+        <i class="icon-search"></i>
+        <span>{{ _('Search') }}</span>
+      </button>
+    </div>
+  </form>
+</div>

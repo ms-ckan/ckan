@@ -1,0 +1,26 @@
+{% extends "page_new.html" %}
+
+{% block subtitle %}{{ _('Featured Post') }}{% endblock %}
+
+{% block breadcrumb_content %}
+  <li class="active">{{_('Featured Post')}}</li>
+{% endblock %}
+
+{% block primary %}
+  <article class="module">
+    <div class="module-content">
+      {% block about %}
+        {% if g.site_about %}
+          {{ h.render_markdown(g.site_about) }}
+        {% else %}
+            <header class="about-heading text-center">
+             <h1 class="text-blue">{{ _('Data - The Infrastructure of the Digital World') }}</h1>
+            </header>
+          {% snippet 'home/snippets/feature_text.html' %}
+        {% endif %}
+      {% endblock %}
+    </div>
+  </article>
+{% endblock %}
+
+{% block secondary %}{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "page.html" %}
+
+{% block subtitle %}{{ _('Register') }}{% endblock %}
+
+{% block breadcrumb_content %}
+  <li class="active">{{ h.nav_link(_('Registration'), controller='user', action='register') }}</li>
+{% endblock %}
+
+{% block primary_content %}
+  <article class="module">
+    <div class="module-content">
+      <h1 class="page-heading">
+        {% block page_heading %}{{ _('Register for an Account') }}{% endblock %}
+      </h1>
+      {{ c.form | safe }}
+    </div>
+  </article>
+{% endblock %}
+
+{% block secondary_content %}
+  <section class="module module-narrow module-shallow">
+    <h2 class="module-heading">{{ _('Why Sign Up?') }}</h2>
+    <div class="module-content">
+      <p>{% trans %}Create datasets, topics and other exciting things{% endtrans %}</p>
+    </div>
+    <h2 class="module-heading">{{ _('Terms and Conditions') }}</h2>
+    <div class="module-content">
+      <p>
+        {% trans %}*By clicking REGISTER, you agree that you have read, understand, and accept the 
+        <a title="CivicData.com Terms and Conditions" href="http://engage.accela.com/rs/accela/images/CivicData com - Terms and Conditions.pdf" target="_blank" _mce_href="http://engage.accela.com/rs/accela/images/CivicData com - Terms and Conditions.pdf">
+            Terms and Conditions
+        </a>
+        established in the attached document {% endtrans %}
+      </p>
+    </div>
+  </section>
+{% endblock %}

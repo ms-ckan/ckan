@@ -1,0 +1,141 @@
+<div class="jumbotron home-banner">
+    <div class="container text-center">
+	
+        <h2>Enhance Civic Engagement.</h2>
+        <h3><a href="/about">A free open data platform built by Accela, a leader<br> in developing solutions for government.</a></h3>
+
+        <p class="masthead-button-links">
+            <a class="btn btn-lg btn-primary btn-shadow btn-banner" href="/organization" role="button" style="width: 100px;">Find Data</a>
+            {% if userobj %}
+            <a class="btn btn-lg btn-primary btn-shadow btn-banner" href="/dashboard/datasets" role="button" style="width: 100px;">Publish Data</a>
+            {% else%}
+            <a class="btn btn-lg btn-primary btn-shadow btn-banner" href="/user/login" role="button" style="width: 100px;">Publish Data</a>
+            {% endif %}
+        </p>
+    </div>
+</div>
+
+<div class="jumbotron bg-white">
+    <header class="masthead2">
+	<h1 class="container posbtm" style="margin-bottom: 72px;">Who's publishing data?</h1>
+    </header>
+    <div class="container">
+        {# snippet 'home/snippets/featured_organization.html' #}
+	<div class="row" id="who-publish" style="height: 98px; margin-bottom: 50px;"></div>
+  	<script type="text/javascript" src="/fanstatic/vendor/:version:2014-11-24T09:42:33/jquery.min.js"></script>
+  	<script src="/base/javascript/homepage.js" type="text/javascript" charset="utf-8"></script>
+    </div>
+</div>
+
+<div class="jumbotron bg-white">
+    <header class="masthead2">
+	<h1 class="container posbtm" style="margin-bottom: 72px;">Why CivicData for Government Agencies?</h1>
+    </header>
+    <div class="container">
+        
+        <div class="row">
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                    <img class="img-circle img-size" alt="Free" src="/base/accela-images/free_graphic.png">
+                    <div class="caption">
+                        <h1 class="text-center text-height">Free</h1>
+                        <p>A free open data solution, CivicData enables agencies to unlock the value of open data without digging into their budgets.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                    <img class="img-circle img-size" alt="Industry Leaders" src="/base/accela-images/expert_graphic.png">
+                    <div class="caption">
+                        <h1 class="text-center text-height">Expert Guidance</h1>
+                        <p>Accela offers expertise from leaders in the open data community who have experience leading successful open data programs from within government agencies.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                    <img class="img-circle img-size" alt="Built on CKAN" src="/base/accela-images/open_graphic.png">
+                    <div class="caption">
+                        <h1 class="text-center text-height">Open Source</h1>
+                        <p>Built on open source using CKAN, a dependable and secure best-in-breed open source platform also used by the federal government’s data.gov, the UK, Australia, Open Colorado and many local and state jurisdictions .</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="jumbotron bg-white">
+    <header class="masthead2">
+	<h1 class="container posbtm" style="margin-bottom: 72px;">Why CivicData for Developers?</h1>
+    </header>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                    <img class="img-circle img-size" alt="Actionable Data" src="/base/accela-images/government_graphic.png">
+                    <div class="caption">
+                        <h1 class="text-center text-height">Government Partnerships</h1>
+                        <p>As a trusted partner with over 60 different state and local governments nationwide using CivicData to publish their datasets, we help you build meaningful solutions and partnerships.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                    <img class="img-circle img-size" alt="Easy-to-use API" src="/base/accela-images/single_graphic.png">
+                    <div class="caption">
+                        <h1 class="text-center text-height">Single Location</h1>
+                        <p>CivicData is the only open government platform that brings together highly-actionable up-to-date government data from multiple agencies in a single location, enabling you to build scalable solutions across multiple jurisdictions.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                    <img class="img-circle img-size" alt="Community Outreach" src="/base/accela-images/powerful_graphic.png">
+                    <div class="caption">
+                        <h1 class="text-center text-height">Powerful APIs</h1>
+                        <p>Widely used, powerful and well documented APIs that are ready to build on within minutes.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="jumbotron bg-white" style="padding-top: 0;">
+    <header class="masthead2">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-6 col-md-8">
+              <h1 class="posbtm">Featured Post</h1>
+            </div>
+            <div class="col-sm-6 col-md-4">
+              <h1 class="posbtm">CivicData News</h1>
+            </div>
+          </div>
+        </div>
+    </header>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6 col-md-8">
+                <div class="thumbnail" style="padding-top: 0;">
+                    <div class="caption">
+                        <h2 class="text-blue">Data - the Infrastructure of the Digital World</h2>
+                        <p>Governments provide infrastructure, like roads, sewers, and transit systems, 
+			that support economic and business development by enabling entrepreneurs to build businesses. 
+			The infrastructure of the digital world is data. As Tim O’Reilly says, data is the “lifeblood of the economy and the nation,” 
+			and access to this data is the only way businesses can reap value of the data. With the rise of the Internet and technology,... <a href="{{ h.url('feature') }}">read more</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail" style="padding-top: 0;">
+                    <div class="caption">
+                        <h2 class="text-blue text-btm"><a href="http://www.accela.com/company/news/press-releases/838-city-of-evanston-partners-with-accela-to-share-restaurant-health-inspection-information-on-yelp-improving-transparency-accessibility-for-evanston-diners">Eating out in Evanston, Illinois made safer with open health inspection data.</a></h2>
+                        <h2 class="text-blue"><a href="http://accela.com/company/blog/entry/accela-civic-platform-trust-love-creativity">What’s trust, love, and creativity got to do with it?</a></h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

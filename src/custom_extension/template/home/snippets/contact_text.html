@@ -1,0 +1,59 @@
+{% trans %}
+<div id="contact-success" class="alert alert-success" role="alert" style="display: none; position: relative; top: -15px;"><strong>Success!</strong></div>
+<div id="contact-danger" class="alert alert-danger" role="alert" style="display: none; position: relative; top: -15px;"><strong>Failure!</strong></div>
+<form class="dataset-form form-horizontal" action="javascript:void(0)" data-module="basic-form" id="form-contact">
+<div class="control-group control-medium">
+    <label class="control-label" for="name"><span class="control-required">*</span> Name</label>
+    <div class="controls ">
+        <input id="name" type="text" name="name" required placeholder="e.g. John Doe">
+    </div>
+</div>
+
+<div class="control-group control-medium">
+    <label class="control-label" for="email_address"><span class="control-required">*</span> Email Address</label>
+    <div class="controls ">
+        <input id="email_address" type="email" name="email_address" required placeholder="e.g. jdoe@companyname.com">
+    </div>
+</div>
+
+<div class="control-group control-medium">
+    <label class="control-label" for="phone_number"><span class="control-required">*</span> Phone Number</label>
+    <div class="controls ">
+        <input id="phone_number" type="text" name="phone_number" value="" required placeholder="e.g. 1(555)555-5555">
+    </div>
+</div>
+
+<div class="control-group control-medium">
+    <label class="control-label" for="government_agency">Government Agency</label>
+    <div class="controls ">
+        <input id="government_agency" type="text" name="government_agency" placeholder="e.g. City of Bridgeview Planning Department">
+    </div>
+</div>
+
+<div class="control-group control-medium">
+    <label class="control-label" for="job_title">Job Title</label>
+    <div class="controls ">
+        <input id="job_title" type="text" name="job_title" placeholder="e.g. Associate Director of Future Development">
+    </div>
+</div>
+
+<div class="control-group control-full">
+    <label class="control-label" for="message">Message</label>
+    <div class="controls">
+        <textarea id="message" name="message" cols="20" rows="5" placeholder="start your message here..."></textarea>
+    </div>
+</div>
+
+<div class="control-group control-full">
+    <div class="controls text-right" style="padding-right: 118px;">
+        <button class="btn btn-primary" type="submit" id="submit-contact"><span class="icon-share"></span> Submit</button>
+    </div>
+</div>
+
+</form>
+
+  <script type="text/javascript" src="/fanstatic/vendor/:version:2014-11-24T09:42:33/jquery.min.js"></script>
+  <script src="/base/javascript/jquery.validation.min.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/base/javascript/contact.js" type="text/javascript" charset="utf-8"></script>
+
+{% endtrans %}

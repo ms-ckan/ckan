@@ -1,0 +1,12 @@
+setup.py
+ckanext/__init__.py
+ckanext/faq/__init__.py
+ckanext/faq/controller.py
+ckanext/faq/plugin.py
+ckanext_faq.egg-info/PKG-INFO
+ckanext_faq.egg-info/SOURCES.txt
+ckanext_faq.egg-info/dependency_links.txt
+ckanext_faq.egg-info/entry_points.txt
+ckanext_faq.egg-info/namespace_packages.txt
+ckanext_faq.egg-info/not-zip-safe
+ckanext_faq.egg-info/top_level.txt

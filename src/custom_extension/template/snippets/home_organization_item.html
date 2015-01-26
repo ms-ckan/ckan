@@ -1,0 +1,7 @@
+    {% set url=h.url_for(controller='organization', action='read', id=organization.name) %}
+    {% set truncate=truncate or 0 %}
+    <div class="col-xs-2">
+        <a  href="{{ url }}" title="{{ organization.title or organization.name }}" class="thumbnail">
+	  <img src="{{ organization.image_display_url or h.url_for_static('/base/images/placeholder-organization.png') }}" alt="{{ organization.name }}"/>
+        </a>
+    </div>
