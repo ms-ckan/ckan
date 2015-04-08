@@ -1,0 +1,55 @@
+Common Core Metadata Schema
+
+Current metadata version: 1.0 FINAL as of 9/20/13
+
+=> Standard Metadata Vocabulary(标准元数据词汇)
+
+元数据是描述、解释、定位或以其他方式可以更容易地获取、使用和管理的资源结构化信息。
+
+
+=> Metadata File Format - JSON
+
+JSON是一种轻量级的数据交换格式，非常容易阅读、解析和生成。
+JSON是基于键/值对的集合以及有序列表的。
+
+该项目是区分大小写的。
+
+=> “Common Core” Required Fields （必须字段）
+
+title | description | keyword | modified | publisher | contactPonit | mbox | identifier | accessLevel 
+
+=> “Common Core” Required-if-Applicable Fields(应用时必须填写的字段)
+
+以下字段必须被用于描述数据集，如果他们是适用的，bureauCode和programCode是必须要填写的。
+
+bureauCode | programCode | accessLevelComment | accessURL | webService | format | license | spatial | temporal 
+
+=> Beyond Common Core – Extending the Schema(扩展架构)
+
+Expanded Fields
+
+建议使用以下属性作为扩展属性，但也可以自定义其他属性
+
+theme | dataDictionary | dataQuality | distribution | accrualPeriodicity | landingPage | language | primaryITInvestmentUII | references | issued | systemOfRecords
+
+
+Further Metadata Field Guidance (alphabetical by field) (进一步元数据字段向导)
+
+（此处略，可查看官方文档，了解以上部分字段的具体使用说明与示例）
+
+=> Rationale for Metadata Nomenclature (元数据命名的基本原理)
+（DCAT = Data Catalog Vocabulary：数据目录词汇）
+
+1、与平台无关，并尽可能符合现有的开放标准
+2、JSON的键名都是直接从DCAT得出，只有少数例外。
+3、增加了新的accessLevel字段，可以轻松地整理数据集到现有的三个类别：（public, restricted public[受限制], and non-public）
+
+4、增加了新的accessLevelComment字段为数据管理者解释怎样访问受限制的数据，并为组织提供一个区块来记录非公开数据集的原因。
+
+5、增加了新的systemOfRecords字段为数据管理者有选择的链接到相关的记录通知URL。记录系统可检索到由个人名称或标识，符号，或其他标识的相关信息。
+
+6、增加了新的bureauCode字段，以确保每个数据集连接与代理的标准方法。
+
+7、增加了新的programCode字段，确保在适用时，每个数据集在同一项目中的连接与代理。
+
+8、增加了新的dataQuality字段，数据是否符合机构的信息质量指南。

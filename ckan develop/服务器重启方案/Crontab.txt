@@ -1,0 +1,196 @@
+
+===========================
+Linux Crontab Documentation
+===========================
+
+Introduce
+---------
+
+   crontab命令常用于Unix和Linux系统中，用于设置周期性被执行的指令。
+   
+   该命令从标准输入设备读取指令，并将其存放于crontab文件中，以供读取和执行。
+
+   通常，crontab储存的指令被守护进程激活，crond服务常常在后台运行。
+   
+   通过设定的时间来检查是否有作业需要执行，这类作业一般称为：cron jobs.
+
+.. crontab 文件
+
+   crontab文件包含送交cron守护进程的一系列作业和指令。
+
+   每个用户可以拥有自己的crontab文件，同时操作系统保存一个针对整个系统的crontab文件。
+
+.. cron表达式
+
+   时间的设定是遵循cron表达式
+
+
+Crontab Service
+---------------
+
+.. crontab命令是Linux自带命令，通常是运行在后台、自动启动。
+
+.. 不同版本的Linux系统，crontab的服务名称不所有同：cron/crond
+
+.. 查看服务是否已经运行：
+
+   ps -ax | grep cron/crond
+
+.. 启动或关闭服务的常用命令如下：
+
+   sudo service cron/crond start/stop/restart
+
+
+Crontab Options
+---------------
+
+#. crontab的基本语法
+
+   crontab [-u user] file
+ 
+   crontab [-u user] [-i] {-e | -l | -r}
+
+#. crontab命令的参数说明
+
+   crontab -u user : 设定某个用户的cron服务，一般root用户在执行这个命令时需要此参数
+
+   crontab -l : 列出用户的cron服务的详细内容
+
+   crontab -r : 删除某个用户的cron服务（用户的cron服务会全部删除，需要慎用）
+
+   crontab -e : 编辑某个用户的cron服务
+
+
+Cron 文件的语法规则
+-------------------
+
+#. 分 时 日 月 星期 命令
+
+   0-59 0-23 1-31 1-12 0-6 COMMAND 
+
+#. 时间设置遵循cron表达式的语法规则，如下是特殊符号的含义：
+
+   * : 代表取值范围的数字
+
+   / : 代表每
+   
+   - : 代表从某个数字到某个数字
+
+   , : 分开几个离散的数字
+   
+   .. 例如，在 12 月内, 每天的早上 6 点到 12 点中，每隔 20 分钟执行一次 /usr/bin/backup :
+
+      */20 6-12 * 12 * /usr/bin/backup
+
+   -----------------------------------------------------------------------------------------------------------------------------------
+   30    3    10,20  *     *     ls     每月10号及20号的3：30执行ls命令[注：“，”用来连接多个不连续的时段]
+
+   25    8-11 *      *     *     ls     每天8-11点的第25分钟执行ls命令[注：“-”用来连接连续的时段]
+
+   */15  *    *      *     *     ls     每15分钟执行一次ls命令 [即每个小时的第0 15 30 45 60分钟执行ls命令 ]
+
+   30    6    */10   *     *     ls     每个月中，每隔10天6:30执行一次ls命令[即每月的1、11、21、31日是的6：30执行一次ls 命令。 ]
+
+   每天7：50以root 身份执行/etc/cron.daily目录中的所有可执行文件
+
+   50   7     *      *     *     root     run-parts     /etc/cron.daily   [ 注：run-parts参数表示，执行后面目录中的所有可执行文件。 ]
+   -----------------------------------------------------------------------------------------------------------------------------------
+
+
+创建Crontab
+-----------
+
+.. 在考虑向cron进程提交一个crontab文件之前，可以设置[编辑器的]环境变量 EDITOR.
+
+   在编辑crontab文件时默认采用vi编辑器（Ubuntu默认会使用GNU编辑器打开），方法如下：
+
+   1、编辑你的home路径下的.profile文件： vi /home/qi/.profile
+
+   2、添加如下内容:
+
+      EDITOR=vi;
+      export EDITOR
+
+   3、source /home/qi/.profile
+
+   默认vi编辑器设定成功，执行命令测试：crontab -e
+
+
+#. 创建一个文件，其中的内容就是crontab要执行的命令，文件名称建议：<user>cron
+
+   添加crontab任务的命令操作如下：   
+
+   crontab <user>cron
+
+   列出crontab文件内容：crontab -l
+ 
+   编辑crontab文件内容：crontab -e
+
+   删除crontab文件内容: crontab -r <注意：会删除当前用户下的所有执行任务，请谨慎操作>
+
+   注释crontab文件内容: # <说明：crontab文件内容的每一行就是一个执行任务>
+
+
+#. crontab的输出配置
+
+   crontab中经常配置运行脚本输出为：> /dev/null 2>&1，来避免crontab运行中有内容输出。
+
+   .. > 代表重定向到哪里，例如：echo "123" > /home/123.txt
+
+   .. /dev/null 代表空设备文件
+
+   .. 1 表示stdout标准输出，系统默认值是1，所以"> /dev/null"等同于"1 > /dev/null"
+
+   .. 2 表示stderr标准错误
+
+   .. & 表示等同于的意思，2>&1， 表示2的输出重定向等同于1
+
+   （注意：在Linux中">>"表示追加内容）
+
+   ------------------------------------------------------------
+   例如：每天5：30执行ls命令，并把结果输出到/home/test文件中
+   
+   30 5 * * * ls >/home/test 2>&1
+   
+   注：2>&1 表示执行结果及错误信息。
+   ------------------------------------------------------------
+
+
+补充的一些说明
+--------------
+
+#. cron服务每分钟不仅要读取一次/var/spool/cron内的所有文件，还需要读一次/etc/crontab。因此我们配置这个文件也能运用cron服务做一些事情。
+
+   用crontab配置是针对某个用户的，而编辑/etc/crontab是针对系统的任务。
+
+   编辑/etc/crontab文件配置cron
+
+   sudo vim /etc/crontab
+
+   -----------------------------------------------------------------------------------------------------
+   SHELL=/bin/sh
+   PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+   MAILTO=root //如果出现错误，或者有数据输出，数据作为邮件发给这个帐号  
+
+　 HOME=/ //使用者运行的路径,这里是根目录  
+
+   # m h dom mon dow user  command
+   17 *    * * *   root    cd / && run-parts --report /etc/cron.hourly
+   25 6    * * *   root    test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.daily )
+   47 6    * * 7   root    test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.weekly )
+   52 6    1 * *   root    test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.monthly )
+   #
+   -----------------------------------------------------------------------------------------------------
+   run-parts参数表示，执行后面目录中的所有可执行文件。
+
+   如果去掉这个参数的话，后面就可以写要运行的脚本名，而不是文件夹名。
+
+
+总结：创建crontab任务的两种方式
+===============================
+
+1）在命令行输入：crontab -e 然后添加相应的任务。（需要先创建一个执行用户任务的文件）
+
+2）直接编辑/etc/crontab文件，添加相应的任务即可
+   

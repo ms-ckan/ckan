@@ -1,0 +1,5 @@
+1. USmetadata 不发布，Bug已经修复
+
+2. Datapusher替换Datastorer，不替换可能会导致创建package不成功。
+
+3. Apache日志分割，按天。使用cronolog工具

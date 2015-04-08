@@ -1,0 +1,11 @@
+1. Clone latest code from: https://github.com/tanmayAccela/my_ckan.git
+
+git clone -b addingUsmetadata https://github.com/tanmayAccela/my_ckan.git
+
+2. Checkout addingUsmetadata branch
+
+3. Copy the extension directory in CivicData instance
+
+4. Run setup.py in virtual environment
+
+the api is break.

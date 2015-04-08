@@ -1,0 +1,117 @@
+CKAN的配置文件：~/ckan/etc/default/production.ini（development.ini）
+
+进入CKAN环境： . /usr/lib/ckan/default/bin/activate
+
+启动CKAN服务：paster serve ../ckan/etc/default/development.ini
+
+查看apache日志：tail -f /var/log/apache2/ckan.error.log
+
+重启Apache服务：sudo service apache2 restart
+
+查看Solr版本：apt-cache show solr-jetty
+
+Solr索引：paster search-index rebuild -r --config=/etc/ckan/default/development.ini
+
+Azure生产环境帐户：kristrujillo@yahoo.com/krist9009
+
+* *******************
+* General Information DEV
+* *******************
+服务器类型: PostgreSQL
+连接名: civicdata4.cloudapp.net
+主机名或 IP 地址: civicdata4.cloudapp.net
+端口: 5432
+初始数据库: datastoredb
+用户名: postgres
+
+
+* *******************
+* General Information QA
+* *******************
+服务器类型: PostgreSQL
+连接名: civicdata3.cloudapp.net
+主机名或 IP 地址: civicdata3.cloudapp.net
+端口: 5432
+初始数据库: datastoredb
+用户名: postgres
+
+
+* *********
+* JIRA 需求
+* *********
+URL：https://accelaeng.atlassian.net/secure/RapidBoard.jspa?rapidView=6&view=planning&selectedIssue=CIV-54&versions=visible
+Account: alex.tian@missionsky.com  
+Password:tyq@$08
+
+// 个人
+Account: sionqi
+Password: sionqi#77
+
+***************
+*Github Account
+***************
+Account: sionqi
+Password: sionqi#77
+
+Postgresql创建：pg_createcluster 
+pg_createcluster -u postgres -d /export/wushen_game -e utf8 --start 9.3 wushen_game
+
+
+* *****************
+* ckanext-ga-report
+* *****************
+For creating detailed reports of CKAN analytics, including totals per group.
+URL: https://github.com/datagovuk/ckanext-ga-report
+
+* *****************
+* ckanext-ga-report
+* *****************
+For creating detailed reports of CKAN analytics, including totals per group.
+URL： https://github.com/datagovuk/ckanext-ga-report
+DEMO：http://data.gov.uk/data/site-usage/
+
+* *********************
+* ckanext-spatial - Geo
+* *********************
+This extension contains plugins that add geospatial capabilities to CKAN.
+URL：http://docs.ckan.org/projects/ckanext-spatial/en/latest/index.html
+
+
+* **************
+* Disqus Comment
+* **************
+The Web's Community of Communities
+URL: https://disqus.com
+
+Account: sionqi
+Password: sionqi#77
+
+
+
+* **************
+* ckanext-disqus
+* https://github.com/ckan/ckanext-disqus
+* **************
+
+* *****************
+* Below is some information about Jira
+* *****************
+URL: https://accelaeng.atlassian.net/secure/RapidBoard.jspa?rapidView=6&view=planning&selectedIssue=CIV-54&versions=visible
+Account: alex.tian@missionsky.com  
+Password:tyq@$08
+
+Account: sion.qi@missionsky.com
+
+
+********************
+*  Windows Azure   *
+********************
+URL: https://portal.azure.com/
+Account: accelams@outlook.com
+Password: Ms123456!
+
+
+删除solr索引
+http://blog.csdn.net/longxia1987/article/details/8911212
+
+http://ckanqadb.cloudapp.net:8983/solr/update/?stream.body=%3Cdelete%3E%3Cid%3E62ad07d16daf60f5b3ef17e1d7129daa%3C/id%3E%3C/delete%3E&stream.contentType=text/xml;charset=utf-8&commit=true

@@ -1,0 +1,2 @@
+0 2 * * 1 /home/opendata/restart/bin/restart-ckan.sh >> /home/opendata/restart/log/restart.log 2>&1
+

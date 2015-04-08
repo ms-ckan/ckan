@@ -1,0 +1,81 @@
+[Thu Mar 12 01:18:29 2015] [error] 2015-03-12 01:18:29,667 INFO  [ckan.lib.base]  /api/action/organization_show render time 0.978 seconds
+[Thu Mar 12 01:18:29 2015] [error] 2015-03-12 01:18:29,774 INFO  [ckan.lib.base]  /api/action/package_show render time 0.086 seconds
+[Thu Mar 12 01:18:30 2015] [error] 2015-03-12 01:18:30,156 INFO  [ckan.lib.base]  /api/action/package_update render time 0.338 seconds
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64] Error - <class 'sqlalchemy.exc.InvalidRequestError'>: One or more mappers failed to initialize - can't proceed with initialization of other mappers.  Original exception was: Class 'kombu.transport.sqlalchemy.models.Message' is not mapped
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64] mod_wsgi (pid=41483): Exception occurred processing WSGI script '/etc/ckan/default/apache.wsgi'.
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64] Traceback (most recent call last):
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]   File "/usr/lib/ckan/default/src/ckan/ckan/config/middleware.py", line 374, in __call__
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]     return self.app(environ, start_response)
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/paste/cascade.py", line 130, in __call__
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]     return self.apps[-1](environ, start_response)
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]   File "/usr/lib/ckan/default/src/ckan/ckan/config/middleware.py", line 238, in __call__
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]     return self.app(environ, start_response)
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/paste/registry.py", line 379, in __call__
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]     app_iter = self.application(environ, start_response)
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/repoze/who/middleware.py", line 107, in __call__
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]     app_iter = app(environ, wrapper.wrap_start_response)
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/pylons/middleware.py", line 214, in __call__
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]     self.app, new_environ, catch_exc_info=True)
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/pylons/util.py", line 94, in call_wsgi_application
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]     app_iter = application(environ, start_response)
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/weberror/errormiddleware.py", line 156, in __call__
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]     return self.application(environ, start_response)
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/webob/dec.py", line 147, in __call__
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]     resp = self.call_func(req, *args, **self.kwargs)
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/webob/dec.py", line 208, in call_func
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]     return self.func(req, *args, **kwargs)
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/fanstatic/publisher.py", line 234, in __call__
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]     return request.get_response(self.app)
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/webob/request.py", line 1053, in get_response
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]     application, catch_exc_info=False)
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/webob/request.py", line 1022, in call_application
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]     app_iter = application(self.environ, start_response)
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/webob/dec.py", line 147, in __call__
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]     resp = self.call_func(req, *args, **self.kwargs)
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/webob/dec.py", line 208, in call_func
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]     return self.func(req, *args, **kwargs)
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/fanstatic/injector.py", line 54, in __call__
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]     response = request.get_response(self.app)
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/webob/request.py", line 1053, in get_response
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]     application, catch_exc_info=False)
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/webob/request.py", line 1022, in call_application
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]     app_iter = application(self.environ, start_response)
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/beaker/middleware.py", line 73, in __call__
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]     return self.app(environ, start_response)
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/beaker/middleware.py", line 155, in __call__
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]     return self.wrap_app(environ, session_start_response)
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/routes/middleware.py", line 131, in __call__
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]     response = self.app(environ, start_response)
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/pylons/wsgiapp.py", line 125, in __call__
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]     response = self.dispatch(controller, environ, start_response)
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/pylons/wsgiapp.py", line 324, in dispatch
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]     return controller(environ, start_response)
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]   File "/usr/lib/ckan/default/src/ckan/ckan/lib/base.py", line 346, in __call__
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]     res = WSGIController.__call__(self, environ, start_response)
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/pylons/controllers/core.py", line 217, in __call__
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]     response = self._inspect_call(self.__before__)
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/pylons/controllers/core.py", line 107, in _inspect_call
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]     result = self._perform_call(func, args)
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/pylons/controllers/core.py", line 60, in _perform_call
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]     return func(**args)
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]   File "/usr/lib/ckan/default/src/ckan/ckan/lib/base.py", line 247, in __before__
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]     app_globals.app_globals._check_uptodate()
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]   File "/usr/lib/ckan/default/src/ckan/ckan/lib/app_globals.py", line 180, in _check_uptodate
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]     value = model.get_system_info('ckan.config_update')
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]   File "/usr/lib/ckan/default/src/ckan/ckan/model/system_info.py", line 31, in get_system_info
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]     obj = meta.Session.query(SystemInfo).filter_by(key=key).first()
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/sqlalchemy/orm/scoping.py", line 114, in do
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]     return getattr(self.registry(), name)(*args, **kwargs)
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/sqlalchemy/orm/session.py", line 980, in query
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]     return self._query_cls(entities, self, **kwargs)
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/sqlalchemy/orm/query.py", line 108, in __init__
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]     self._set_entities(entities)
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/sqlalchemy/orm/query.py", line 117, in _set_entities
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]     self._setup_aliasizers(self._entities)
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/sqlalchemy/orm/query.py", line 132, in _setup_aliasizers
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]     _entity_info(entity)
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/sqlalchemy/orm/util.py", line 578, in _entity_info
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]     mapperlib.configure_mappers()
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/sqlalchemy/orm/mapper.py", line 2255, in configure_mappers
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64]     raise e
+[Thu Mar 12 01:18:30 2015] [error] [client 137.135.40.64] InvalidRequestError: One or more mappers failed to initialize - can't proceed with initialization of other mappers.  Original exception was: Class 'kombu.transport.sqlalchemy.models.Message' is not mapped

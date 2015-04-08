@@ -1,0 +1,257 @@
+===================================
+CKAN-Plgin Development - By Sion.Qi
+===================================
+
+Step1 - Using paster create command to create an "empty" extension from a template.
+
+      . /usr/lib/ckan/default/bin/activate
+
+      cd /usr/lib/ckan/default/src
+
+      paster --plugin=ckan create -t ckanext <ckanext-name>
+
+      提示：使用paster create 命令会默认在src目录下创建一个名为<ckanext-name>的文件夹。
+            也可以通过-o选项来指定插件存放的目录。
+            ckan插件的名称通常使用ckanext-开头。
+
+ckanext-iauthfunctions/
+    ckanext/
+        __init__.py
+        iauthfunctions/
+            __init__.py
+    ckanext_iauthfunctions.egg-info/
+    setup.py
+
+CKAN插件的基本目录形式如上，类似Django项目。
+
+其中setup.py是插件的安装脚本，后面有具体的使用说明。
+
+ckanext_name.egg-info目录中包含自动生成的项目元数据。不需要编辑和查看，也不用添加到版本控制。
+
+ckanext/iauthfunctions是Python包目录，在这里编写代码。
+
+
+Step2 - Creating a plugin class
+
+
+   创建文件：ckanext-iauthfunctions/ckanext/iauthfunctions/plugin.py
+
+   import ckan.plugins as plugins
+
+   class ExampleIAuthFunctionsPlugin(plugins.SingletonPlugin):
+
+      pass
+
+   建议：最好的方式是去看已经写好的插件代码。应该具备较好的Ptyhon基础和Django项目经验。
+
+Step3 - Adding the plugin to setup.py
+
+   编辑 setup.py 文件，添加一个entry_points。插件安装是使用的名称。
+
+   entry_points = """
+   
+     [ ckan.plugins ]
+
+     example_iauthfunctions=ckanext.iauthfunctions.plugin:exampleIAuthFunctionsPlugin
+
+   """,
+
+
+Step4 - Installing the extension
+
+   前提是必须运行在CKAN环境中，才能正确安装。
+
+   . /usr/lib/ckan/default/bin/activate
+
+   cd /usr/lib/ckan/default/src/ckanext-iauthfunctions
+
+   python setup.py develop
+
+   说明：如果是在github的CKAN项目,还有一种方式，通常CKAN extensions会提供下载说明。也可以参见头部的描述。
+
+
+Step5 - Enabling the plugin
+
+   插件必须添加到ckan的配置文件中才能生效。方法如下：
+
+   vim ../ckan/etc/default/development.ini
+
+   ckan.plugins = stats text_preview <example_iauthfunctions>
+
+   然后重启服务即可
+  
+   $ paster serve ../ckan/etc/default/development.ini
+
+
+==================================
+Troubleshooting 一些问题与解决方案
+==================================
+
+1、PluginNotFoundException
+
+   E.g. ckan.plugins.core.PluginNotFoundException: example_iauthfunctions
+
+  -------------
+  a）检查插件名称是否写错。ckan配置文件中的名称必须是setup.py文件中设置的名称。
+
+  b) 检查是否正确运行 python setup.py develop，setup.py 是指创建插件时生成的setup.py文件。
+
+
+2、ImportError
+
+  可能原因很多，但通常会提示错误信息，根据错误信息去解决相关问题。
+
+
+====================================================
+核心模块开发 - 基于简单的 ckanext-faq 插件的开发实践
+====================================================
+
+前提：
+
+第一步，使用前面讲述的步骤创建一个空的插件架构。
+
+第二步，要熟悉使用CKAN-Plugin 插件开发接口，和Toolkit工具模块提供的类和方法。
+
+   总的来讲，简单的插件都是基于ToolKit工具模块实现的。所以，要熟悉Toolkit模块
+
+第三步，CKAN-Plugin插件要遵循特定的机制，下面通过代码来描述。
+
+   当创建一个名为<ckanext-faq>的插件时，我们只需要关心../ckanext-faq/ckanext/faq/目录的内容即可。
+
+   我们可以构建基本的结构图：
+
+../ckanext-faq/ckanext/faq/
+|-- public/ 		-> 静态资源目录，如css,scripts,images, etc.
+   |-- css/		-> css文件目录，用来存放新建的css文件，调用方法</css/file.css>即可
+   |-- scripts/         -> js脚本目录，用来存储新建的js文件，调用同上
+|-- templates/		-> 模块目录，新建的HTML模块可放在此目录下，子目录名称要避免与别的插件相同。
+   |-- faq/ 
+|-- plugin.py  		-> 插件引导类，可以添加新的实现
+|-- controller.py       -> 插件控制器，负责处理请求和响应
+|-- model.py		-> 一般结合数据库使用
+|-- ...			-> 其他的模块可以视情况使用
+
+
+plugin.py
+---------
+import ckan.plugins as p
+from ckan.plugins import implements, toolkit
+
+class FAQPlugin(p.SingletonPlugin):
+    implements(p.IConfigurer, inherit=True)	-> 实现配置文件接口，可添加新的配置实现
+    implements(p.IRoutes, inherit=True)		-> 实现远程调用接口，负责请求的处理与响应（含URL时必须实现它）
+
+    def configure(self, config):
+        self.site_url = config.get('ckan.site_url')
+
+    def update_config(self, config):
+        toolkit.add_template_directory(config, 'templates')	-> 在配置中添加<templates>和<public>目录
+        toolkit.add_public_directory(config, 'public')
+
+    def before_map(self, map):	-> IRoutes接口的实现方法，管理请求的映射
+
+        faq_controller = 'ckanext.faq.controller:FAQController'
+        map.connect('/faqs', controller=faq_controller, action='index')	
+
+        -> map.connect()的基本语法，通常可以满足要求，可以建立多个map.connect
+
+        return map
+
+在plugin.py 中还允许有更多的实现，需要参考implements模块的内容。
+
+
+controller.py
+-------------
+<由于此次做的是静态内容，所以controller仅做了一次转发。
+如果有更多的业务逻辑处理，可以在方法中实现。
+它的实现原理和Django是一样的，关于模块的更多功能与实现，就请学习Django框架和toolkit模块>
+
+from ckan.lib.base import BaseController
+import ckan.plugins as p
+
+c = p.toolkit.c
+render = p.toolkit.render
+
+class FAQController(BaseController):
+
+    def index(self):
+        return render('faq/index.html')
+
+
+至此，简单的模块开发完成。
+
+==============================================
+模块开发中 <templates>和<public>目录的复杂处理
+==============================================
+
+与业务逻辑来讲，templates的模块构建也是复杂的工作。
+
+1、要熟悉pylons框架的Web模块标签的使用。
+
+   由于CKAN项目中，大量使用了继承，在开发自定义插件时，要先熟悉CKAN定义的基础templates的内容。
+
+2、要学会将页面内容模块化，只构造自己页面的核心内容，方便集成和后期的管理与维护，确保主题的一致性。
+
+3、将模块碎片化后，要对模块重新构建，学熟悉模块的复杂构建。
+
+以下是 ../ckan/templates/package/snippets/info.html的模板内容
+-------------------------------------------------------------
+它是碎片化的，只是页面的一部分
+
+{#
+Displays a sidebard module with information for given package
+
+pkg    - The package dict that owns the resources.
+active - The active resource.
+action - The action that this is coming from.
+
+Example:
+
+  {% snippet "package/snippets/info.html", pkg=pkg %}
+
+#}
+{% if pkg and h.check_access('package_update', {'id':pkg.id }) %}
+  <section class="module module-narrow">
+    <h2 class="module-heading"><i class="icon-sitemap"></i> {{ _("Edit Dataset") }}</h2>
+    <ul class="unstyled nav nav-simple">
+      <li class="nav-item{% if action == 'package_edit' %} active{% endif %}">
+        {% link_for h.dataset_display_name(pkg)|truncate(30), controller='package', action='edit', id=pkg.name %}
+      </li>
+    </ul>
+    {% set resources = pkg.resources or [] %}
+    <h2 class="module-heading"><i class="icon-reorder"></i> {{ _("Edit Resources") }}</h2>
+    <ul class="unstyled nav nav-simple">
+      {% block package_resource_list %}
+        {% for resource in resources %}
+          <li class="nav-item{{ ' active' if active == resource.id }}">
+            {% link_for h.resource_display_name(resource)|truncate(30), controller='package', action='resource_edit', id=pkg.name, resource_id=resource.id, inner_span=true %}
+          </li>
+        {% endfor %}
+      {% endblock %}
+      <li class="nav-btn"><a href="{{ h.url_for(controller='package', action='new_resource', id=pkg.name)  }}" class="btn{% if action == 'resource_new' %} disabled{% endif %}"><i class="icon-plus"></i> {{ _('Add New Resource') }}</a></li>
+    </ul>
+  </section>
+{% endif %}
+
+
+以下是一个完整的页面，通过多级继承，该模板只需实现它所关心的内容
+----------------------------------------------------------------
+通过block可以重写父模板的实现。
+
+{% extends "package/read_base.html" %}
+
+{% block subtitle %}{{ _('Activity Stream') }} - {{ c.pkg_dict.title or c.pkg_dict.name }}{% endblock %}
+
+{% block primary_content_inner %}
+  <h1 class="hide-heading">{% block page_heading %}{{ _('Activity Stream') }}{% endblock %}</h1>
+  {% block activity_stream %}
+    {{ c.package_activity_stream | safe }}
+  {% endblock %}
+{% endblock %}
+
+
+====================================
+关于模板中使用的常用标签和自定义标签 [暂略]
+====================================
+
+   

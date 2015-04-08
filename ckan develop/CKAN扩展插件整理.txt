@@ -1,0 +1,133 @@
+以下信息来自Github的搜索结果筛选
+
+    By: Sion.Qi 
+  Date: 2014-06-24
+
+
+选择要求：
+1、版本支持
+2、更新时间
+3、说明文档
+4、用户评价
+
+
+=> ckanext-harvest：Remote harvesting extension for CKAN
+
+   Links：https://github.com/ckan/ckanext-harvest
+
+   Star 23 Fork 38
+
+
+=> ckanext-spatial - Geo related plugins for CKAN
+   
+   描述地理位置的插件，目前已经集成在系统中。
+
+   Links：https://github.com/ckan/ckanext-spatial
+
+   Star 29 Fork 30
+
+=> ckanapi 
+ 
+   一个ckanapi命令行界面，允许批量操作及简单地操作本地和远程CKAN实例。
+
+   Links: https://github.com/ckan/ckanapi
+
+   Star 19 Fork 6
+
+=> ckanext-datastorer
+  
+   可以自动处理一些任务，保存CKAN Resources并链接到CSV和excel文件。
+
+   Links：https://github.com/ckan/ckanext-datastorer
+
+   Star 14 Fork 13
+
+===============================================
+
+英国政府网站使用的一些插件： 
+http://data.gov.uk/
+
+ckanext-archiver, ckanext-harvest, ckanext-spatial, 
+ckanext-os, ckanext-qa, ckanext-social
+
+=============================================== 
+
+=> ckanext-archiver
+
+   提供了下载和保存CKAN资源一套Celery任务。它可以被配置为自动运行。
+
+   Links: https://github.com/ckan/ckanext-archiver
+
+   Star 6 Fork 6
+
+=> ckanext-qa  CKAN Quality Assurance Extension
+
+   检查每一个包资源，并给这些资源的开放得分。基于Tim Berners-Lee's Five stars
+
+   还提供了一个仪表盘，可以查看已损坏的链接和开放性得分。
+
+   Links: https://github.com/ckan/ckanext-qa
+
+   Star 5 Fork 5
+
+=> ckanext-ngds
+   
+   NGDS 全国地热数据系统支持存储和相关搜索，认识和利用地热能源的信息资源。
+
+   这是一个提供网络数据和元数据的服务。。。
+
+   Links: https://github.com/ngds/ckanext-ngds
+
+   Star 3 Fork 4
+
+=> ckanext-dcat
+  
+   可自定义元数据
+
+   Links: https://github.com/ckan/ckanext-dcat
+
+   Star 11 Fork 2
+
+=> ckanext-pages
+
+   提供简单添加页面的功能
+
+   Links: https://github.com/ckan/ckanext-pages
+
+   Star 8 Fork 3
+
+=> ckanext-datacatalogs
+
+   可以使用datalogs.org的主题
+
+   Links: https://github.com/okfn/ckanext-datacatalogs
+
+   Star 4 Fork 1
+
+=> ckanext-realtime
+
+   实时数据门户
+
+   Links: https://github.com/alexandrainst/ckanext-realtime
+
+   Star 10 Fork 1
+
+=> ckanext-feedcontent
+
+   Feed
+
+   Links: https://github.com/okfn/ckanext-feedcontent
+
+   Star 2 Fork 0
+
+=> ckanext-ga-report
+
+   创建datailed reports
+
+   Links: https://github.com/datagovuk/ckanext-ga-report
+
+   Star 4 Fork 0
+
+
+
+

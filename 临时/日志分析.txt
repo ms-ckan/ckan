@@ -1,0 +1,102 @@
+
+
+
+date +%Y-%m-%d
+
+cat /var/log/apache2/ckan.error.log | egrep ERROR | egrep '2015-02-27' > error.log
+
+
+1. 取出当天的错误日志
+
+cat /var/log/apache/ckan.error.log | egrep `date '+%Y]'` | egrep `date '+%a %b %e'`
+
+[Fri Mar 13 07:11:13 2015] [error] [client 207.46.129.22] Error - <type 'exceptions.TypeError'>: <ckan.lib.navl.dictization_functions.Missing object at 0x7f7f51ffad10> is not JSON serializable
+[Fri Mar 13 07:11:15 2015] [error] [client 207.46.129.22] Error - <type 'exceptions.TypeError'>: <ckan.lib.navl.dictization_functions.Missing object at 0x7f7f51ffad10> is not JSON serializable
+[Fri Mar 13 07:11:16 2015] [error] [client 207.46.129.22] Error - <type 'exceptions.TypeError'>: <ckan.lib.navl.dictization_functions.Missing object at 0x7f7f51ffad10> is not JSON serializable
+
+
+[Fri Mar 13 07:07:08 2015] [error] 2015-03-13 07:07:08,875 ERROR [ckan.controllers.api] Validation error: "{'__type': 'Validation Error', 'contact_name': [u'Missing value'], 'bureau_code': [u'Missing value'], 'prog_code': [u'Missing value'], 'publisher': [u'Missing value'], 'modified': [u'Date format incorrect'], 'identifier': [u'Missing value']}"
+
+
+
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22] mod_wsgi (pid=48253): Exception occurred processing WSGI script '/etc/ckan/default/apache.wsgi'.
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22] Traceback (most recent call last):
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]   File "/usr/lib/ckan/default/src/ckan/ckan/config/middleware.py", line 374, in __call__
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]     return self.app(environ, start_response)
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/paste/cascade.py", line 130, in __call__
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]     return self.apps[-1](environ, start_response)
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]   File "/usr/lib/ckan/default/src/ckan/ckan/config/middleware.py", line 238, in __call__
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]     return self.app(environ, start_response)
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/paste/registry.py", line 379, in __call__
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]     app_iter = self.application(environ, start_response)
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/repoze/who/middleware.py", line 107, in __call__
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]     app_iter = app(environ, wrapper.wrap_start_response)
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/pylons/middleware.py", line 214, in __call__
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]     self.app, new_environ, catch_exc_info=True)
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/pylons/util.py", line 94, in call_wsgi_application
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]     app_iter = application(environ, start_response)
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/weberror/errormiddleware.py", line 156, in __call__
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]     return self.application(environ, start_response)
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/webob/dec.py", line 147, in __call__
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]     resp = self.call_func(req, *args, **self.kwargs)
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/webob/dec.py", line 208, in call_func
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]     return self.func(req, *args, **kwargs)
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/fanstatic/publisher.py", line 234, in __call__
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]     return request.get_response(self.app)
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/webob/request.py", line 1053, in get_response
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]     application, catch_exc_info=False)
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/webob/request.py", line 1022, in call_application
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]     app_iter = application(self.environ, start_response)
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/webob/dec.py", line 147, in __call__
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]     resp = self.call_func(req, *args, **self.kwargs)
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/webob/dec.py", line 208, in call_func
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]     return self.func(req, *args, **kwargs)
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/fanstatic/injector.py", line 54, in __call__
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]     response = request.get_response(self.app)
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/webob/request.py", line 1053, in get_response
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]     application, catch_exc_info=False)
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/webob/request.py", line 1022, in call_application
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]     app_iter = application(self.environ, start_response)
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/beaker/middleware.py", line 73, in __call__
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]     return self.app(environ, start_response)
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/beaker/middleware.py", line 155, in __call__
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]     return self.wrap_app(environ, session_start_response)
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/routes/middleware.py", line 131, in __call__
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]     response = self.app(environ, start_response)
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/pylons/wsgiapp.py", line 125, in __call__
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]     response = self.dispatch(controller, environ, start_response)
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/pylons/wsgiapp.py", line 324, in dispatch
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]     return controller(environ, start_response)
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]   File "/usr/lib/ckan/default/src/ckan/ckan/lib/base.py", line 346, in __call__
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]     res = WSGIController.__call__(self, environ, start_response)
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/pylons/controllers/core.py", line 217, in __call__
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]     response = self._inspect_call(self.__before__)
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/pylons/controllers/core.py", line 107, in _inspect_call
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]     result = self._perform_call(func, args)
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/pylons/controllers/core.py", line 60, in _perform_call
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]     return func(**args)
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]   File "/usr/lib/ckan/default/src/ckan/ckan/lib/base.py", line 247, in __before__
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]     app_globals.app_globals._check_uptodate()
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]   File "/usr/lib/ckan/default/src/ckan/ckan/lib/app_globals.py", line 180, in _check_uptodate
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]     value = model.get_system_info('ckan.config_update')
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]   File "/usr/lib/ckan/default/src/ckan/ckan/model/system_info.py", line 31, in get_system_info
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]     obj = meta.Session.query(SystemInfo).filter_by(key=key).first()
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/sqlalchemy/orm/scoping.py", line 114, in do
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]     return getattr(self.registry(), name)(*args, **kwargs)
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/sqlalchemy/orm/session.py", line 980, in query
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]     return self._query_cls(entities, self, **kwargs)
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/sqlalchemy/orm/query.py", line 108, in __init__
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]     self._set_entities(entities)
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/sqlalchemy/orm/query.py", line 117, in _set_entities
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]     self._setup_aliasizers(self._entities)
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/sqlalchemy/orm/query.py", line 132, in _setup_aliasizers
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]     _entity_info(entity)
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/sqlalchemy/orm/util.py", line 578, in _entity_info
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]     mapperlib.configure_mappers()
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]   File "/usr/lib/ckan/default/lib/python2.7/site-packages/sqlalchemy/orm/mapper.py", line 2255, in configure_mappers
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22]     raise e
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22] InvalidRequestError: One or more mappers failed to initialize - can't proceed with initialization of other mappers.  Original exception was: When initializing mapper Mapper|Queue|kombu_queue, expression 'Message' failed to locate a name ("name 'Message' is not defined"). If this is a class name, consider adding this relationship() to the <class 'kombu.transport.sqlalchemy.models.Queue'> class after both dependent classes have been defined.
+[Fri Mar 13 08:47:00 2015] [error] [client 207.46.129.22] Error - <type 'exceptions.TypeError'>: <ckan.lib.navl.dictization_functions.Missing object at 0x7f87a5ffad10> is not JSON serializable
+[Fri Mar 13 08:47:02 2015] [error] [client 207.46.129.22] Error - <type 'exceptions.TypeError'>: <ckan.lib.navl.dictization_functions.Missing object at 0x7f87a5ffad10> is not JSON serializable
+[Fri Mar 13 08:47:02 2015] [error] [client 207.46.129.22] Error - <type 'exceptions.KeyError'>: 'resources'
+[Fri Mar 13 08:47:02 2015] [error] [client 207.46.129.22] Error - <class 'sqlalchemy.exc.InvalidRequestError'>: One or more mappers failed to initialize - can't proceed with initialization of other mappers.  Original exception was: When initializing mapper Mapper|Queue|kombu_queue, expression 'Message' failed to locate a name ("name 'Message' is not defined"). If this is a class name, consider adding this relationship() to the <class 'kombu.transport.sqlalchemy.models.Queue'> class after both dependent classes have been defined.

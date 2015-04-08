@@ -1,0 +1,59 @@
+=========================
+# Fullow Button的修改方案
+# Author: Sion.Qi
+# Date: 2014-07-08
+=========================
+
+1、涉及文件
+  
+templates/
+|-- group/snippets/info.html
+|-- package/read_base.html
+|-- snippets/
+    |-- organization.html -> 这个文件在custom_extension下覆盖没用？
+    |-- context/
+        |-- group.html
+        |-- user.html
+|-- user/read_base.html
+
+
+2、将以上文件复制一备到custom_extension目录下templates对应的文件夹。
+
+   （说明：custom_extension会覆盖原来的文件内容）
+
+
+3、在以上文件中打开<div class="nums">将第一个<dl><dd>添加一个属性：data-module="followers"
+
+    <div class="nums">
+        <dl>
+          <dt>{{ _('Followers') }}</dt>
+          <dd data-module="followers">{{ h.SI_number_span(user.num_followers) }}</dd>
+        </dl>
+        ...
+    </div>
+
+
+4、修改js脚本文件：follow.js
+
+   ../public/base/javascript/modules/follow.js
+
+   增加如下代码：[// addition] 注释行为新增代码
+
+_onClickLoaded: function(json) {
+	var options = this.options;
+	var sandbox = this.sandbox;
+	var followNums = $("[data-module=followers]"); // addition
+	var nums = parseInt(followNums.text()); // addition
+	options.loading = false;
+	this.el.removeClass('disabled');
+	if (options.action == 'follow') {
+		followNums.html('<span>'+ (++nums) + '</span>'); // addition
+		options.action = 'unfollow';
+		this.el.html('<i class="icon-remove-sign"></i> ' + this.i18n('unfollow')).removeClass('btn-success').addClass('btn-danger');
+	} else {
+		followNums.html('<span>'+ (--nums) + '</span>'); // addition
+		options.action = 'follow';
+		this.el.html('<i class="icon-plus-sign"></i> ' + this.i18n('follow')).removeClass('btn-danger').addClass('btn-success');
+	}
+	sandbox.publish('follow-' + options.action + '-' + options.id);
+}

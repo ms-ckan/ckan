@@ -1,0 +1,17 @@
+SELECT p.id, p.name, p.title, 'http://www.civicdata.com/dataset/'||p.name AS URL, private, count, resource_num, group_id, group_name, group_title, group_url FROM "package" p
+JOIN (
+-- 查询相同的名称
+SELECT title, count(*) AS count FROM "package" WHERE state = 'active' GROUP by title having count(title)> 1
+) AS a ON a.title = p.title
+
+JOIN 
+-- 查询package下的resource数量
+(SELECT p.id,(SELECT count(*) FROM resource r WHERE r.resource_group_id in (SELECT id FROM resource_group rg WHERE package_id = p.id)) AS resource_num
+FROM package AS p) as b ON p.id = b.id
+
+JOIN
+-- 查询所属的GROUP
+(select p.id, g.id as group_id, g.name as group_name, g.title as group_title, 'http://www.civicdata.com/organization/'||g.name AS group_url from package p 
+LEFT JOIN "group" g ON g.id = p.owner_org) as c ON c.id = p.id
+
+WHERE p.state = 'active'

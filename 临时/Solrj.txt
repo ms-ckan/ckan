@@ -1,0 +1,241 @@
+1、从Maven仓库下载SOLR对应的SOLRJ版本
+
+<dependency>
+	<groupId>org.apache.solr</groupId>
+	<artifactId>solr-solrj</artifactId>
+	<version>4.10.4</version>
+</dependency>
+
+
+2、HttpSolrServer
+
+HttpSolrServer使用Apache Commons HTTP Client连接SOLR。
+
+注意：从4.0开始，CommonsHttpSolrServer修改为HttpSolrServer，StreamingUpdateSolrServer修改为ConcurrentUpdateSolrServer。
+
+String url = "http://localhost:8983/solr";
+SolrServer server = new HttpSolrServer(url);
+
+上面这种方式实现的HttpSolrServer是线程安全的。你必须为所有请求使用相同的实例。如果实例已经创建，它可能导航连接泄漏。推荐的做法是使用的静态实例， 所有的请求共享同一个SOLR服务连接。
+
+连接设置
+
+  server.setMaxRetries(1); // 最大的连接重试。 默认 0.  > 1 不推荐使用.
+  server.setConnectionTimeout(5000); // 连接超时时间
+  // 设置所需的XML响应的解析器只跨版本兼容性,只有当一方1.4.1或更早,另一边是3.1或更高版本。
+  server.setParser(new XMLResponseParser()); // 二进制解析默认已使用
+  server.setSoTimeout(1000);  // socket read timeout
+  server.setDefaultMaxConnectionsPerHost(100);
+  server.setMaxTotalConnections(100);
+  server.setFollowRedirects(false);  // defaults to false
+
+  // allowCompression defaults to false.
+  // Server side must support gzip or deflate for this to have any effect.
+  server.setAllowCompression(true);
+
+
+3、用户使用向导
+
+SolrJ的设计框架就是: SolrRequest 请求 SolrServer 响应 SolrResponse.
+为简单起见，最常用的是SolrServer.
+
+**添加数据到SOLR**
+
+*SOLR id字段是唯一标识*
+
+1）创建SOLR实例
+SolrServer server = new HttpSolrServer("http://localhost:8983/solr");
+
+删除全部索引：server.deleteByQuery("*:*");
+
+2）构建一个文档
+    SolrInputDocument doc1 = new SolrInputDocument();
+    doc1.addField( "id", "id1", 1.0f );
+    doc1.addField( "name", "doc1", 1.0f );
+    doc1.addField( "price", 10 );
+
+3）构建其他的文档：每个文档可以独立添加但更高效地进行批量更新。都是使用HTTP方式调用
+    SolrInputDocument doc2 = new SolrInputDocument();
+    doc2.addField( "id", "id2", 1.0f );
+    doc2.addField( "name", "doc2", 1.0f );
+    doc2.addField( "price", 20 );
+
+*属性di, name, price已经在schema.xml文件中配置，如果没有需要添加到配置文件*
+
+4）创建一个文档集合
+    Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
+    docs.add( doc1 );
+    docs.add( doc2 );
+
+5）添加文档集合添加到SOLR
+    server.add( docs );
+
+6）提交：默认方式为手动提交，可以在solrconfig.xml中设置为自动提交。
+    server.commit();
+
+还可以在文档提交之后添加文档：
+    UpdateRequest request = new UpdateRequest();
+    request.setAction(AbstractUpdateRequest.ACTION.COMMIT, false, false);
+    request.add(docs);
+    UpdateResponse response = request.process(server);
+
+**流文档的更新 Streaming documents for an update**
+
+大多数情况下ConcurrentUpdateSolrServer将满足你的需求。下面给出的解析方案可以应用。
+
+这里最好的方法在同一个http请求中更新你所有的文档。【思考中】
+
+HttpSolrServer server = new HttpSolrServer();
+Iterator<SolrInputDocument> iter = new Iterator<SolrInputDocument>(){
+     public boolean hasNext() {
+        boolean result ;
+        // set the result to true false to say if you have more documensts
+        return result;
+      }
+
+      public SolrInputDocument next() {
+        SolrInputDocument result = null;
+        // construct a new document here and set it to result
+        return result;
+      }
+};
+server.add(iter);
+
+**直接添加POJOs到SOLR**
+
+1）创建一个Java Bean，并使用SolrJ提供的注解。注意添加get/set方法。
+
+ import org.apache.solr.client.solrj.beans.Field;
+
+ public class Item {
+    @Field
+    String id;
+
+    @Field("cat")
+    String[] categories;
+
+    @Field
+    List<String> features;
+
+  }
+
+2）创建服务器实例
+    SolrServer server = getSolrServer();
+
+3）创建bean实例
+
+    Item item = new Item();
+    item.id = "one";
+    item.categories =  new String[] { "aaa", "bbb", "ccc" };
+
+4）添加到Solr
+    server.addBean(item);
+
+5）添加多个Bean
+  List<Item> beans ;
+  server.addBeans(beans);
+
+6）提交到SOLR
+    server.commit();
+
+*注意：共享同一个solr实例，提供性能*
+
+**Solr机务机制**
+
+Solr实现了服务器级别的事务，意味着在提交（commit）、优化(optimize)、回滚(rollback)等所有请求都是最新的。
+更新solr最合适的方法是用一个过程,为了避免竞态条件使用时提交和回滚。此外,理想情况下,应用程序将使用批处理自提交和优化可以昂贵的例程。
+
+
+**从数据库中读取数据**
+
+从数据库读取数据，还是通过SolrInputDocument来批量更新索引。
+
+**设置RequestWriter**
+SolrJ允许你上传XML或二进制格式的内容。默认是XML。使用以下使用二进制格式上传。这是相同的格式,SolrJ使用获取的结果,并且可以大大提高性能,因为它减少了XML编组开销。
+
+   server.setRequestWriter(new BinaryRequestWriter());
+
+需要确认solrconfig.xml中是否配置：
+   <requestHandler name="/update/javabin" class="solr.BinaryUpdateRequestHandler" />
+
+**从Solr中读取数据**
+
+1）创建SOLR实例
+    SolrServer server = getSolrServer();
+
+2）构建一个SolrQuery
+    SolrQuery query = new SolrQuery();
+    query.setQuery( "*:*" );
+    query.addSortField( "price", SolrQuery.ORDER.asc );
+
+3）执行查询
+    QueryResponse rsp = server.query( query );
+
+4）获取结果
+    SolrDocumentList docs = rsp.getResults();
+
+5）读取为文档转换成Bean，bean必须是使用SolrJ注解的POJOs
+   List<Item> beans = rsp.getBeans(Item.class);
+
+**高级用法 Advanced usage**
+
+SolrJ提供API创建查询，下面是一个facted query实例。
+
+  SolrServer server = getSolrServer();
+  SolrQuery solrQuery = new  SolrQuery().
+                setQuery("ipod").
+                setFacet(true).
+                setFacetMinCount(1).
+                setFacetLimit(8).
+                addFacetField("category").
+                addFacetField("inStock");
+  QueryResponse rsp = server.query(solrQuery);
+
+**高亮查询 highlighting**
+
+高亮显示参数设置与其他常见的参数。
+
+    SolrQuery query = new SolrQuery();
+    query.setQuery("foo");
+
+    query.setHighlight(true).setHighlightSnippets(1); //set other params as needed
+    query.setParam("hl.fl", "content");
+
+    QueryResponse queryResponse = getSolrServer().query(query);
+
+
+然后回到你需要突出显示的结果是这样的:
+
+    Iterator<SolrDocument> iter = queryResponse.getResults().iterator();
+
+    while (iter.hasNext()) {
+      SolrDocument resultDoc = iter.next();
+
+      String content = (String) resultDoc.getFieldValue("content");
+      String id = (String) resultDoc.getFieldValue("id"); //id is the uniqueKey field
+
+      if (queryResponse.getHighlighting().get(id) != null) {
+        List<String> highlightSnippets = queryResponse.getHighlighting().get(id).get("content");
+      }
+    }
+
+**负载均衡 Load Balancer for queries**
+负载均衡查询由SolrJ提供一个简单的内置循环负载均衡器， LBHttpSolrServer.
+
+
+**使用SolrCloud**
+
+SorlJ包含一个聪明的客户端 SolrCloud。是ZooKeeper相关的。你的Java应用程序只需要知道ZooKeeper实例。不关心Solr实例，由ZooKeeper得到。
+
+与SolrCloud进行交互,您应该使用CloudSolrServer的一个实例,并将其传递给你的ZooKeeper主机或主机。
+
+import org.apache.solr.client.solrj.impl.CloudSolrServer;
+import org.apache.solr.common.SolrInputDocument;
+
+CloudSolrServer server = new CloudSolrServer("localhost:9983");
+server.setDefaultCollection("collection1");
+SolrInputDocument doc = new SolrInputDocument();
+doc.addField( "id", "1234");
+doc.addField( "name", "A lovely summer holiday");
+server.add(doc);
+server.commit();

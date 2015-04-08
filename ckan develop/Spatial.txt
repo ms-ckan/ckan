@@ -1,0 +1,61 @@
+** ckanext-spatial
+** http://docs.ckan.org/projects/ckanext-spatial/en/latest/install.html
+
+
+#. Installation and Setup
+
+    1. Install PostGIS and system packages
+
+    - If you only want to load the Previews for Spatial Formats you don't need to install any of the packages.
+
+    2. Install the extension
+
+    - Install this extension into your python environment.
+
+    - From Github: https://github.com/ckan/ckanext-spatial
+
+    3. Configuration
+
+    - Once PostGIS is intalled and configured in the database the extension needs to create a table to store the datasets extent, called package_extent.
+
+#. Spatial Search
+
+   The spatial extension allows to index datasets with spatial information so they can be filtered via a spatial query.
+
+   API e.g.: http://localhost:5000/api/action/package_search?q=Pollution&ext_bbox=-7.535093,49.208494,3.890688,57.372349
+
+   1. Setup
+
+   - Add the spatial_metadata and spatial_query plugins to production.ini file.
+
+   ckan.plugins = [other plugins] spatial_metadata spatial_query
+
+   ckanext.spatial.search_backend = solr
+
+   2. Geo-Indexing your datasets
+
+    - The value must be a valid GeoJSON geometry.
+
+    - Choosing a backend for the spatial search
+
+    Choosing: solr(Recommended), solr-spatial-field, postgis 
+
+   3. Using Functions
+
+   - Spatial Search Widget
+ 
+   - Dataset Extent Map
+
+   - Legacy Search
+
+
+#. Previews for Spatial Formats
+
+   1. GeoJSON Preview
+
+   - The GeoJSON previewer is based on Leaflet. 
+
+   - To enable the GeoJSON previewer you need to add the geojson_preview plugin to production.ini file.
+
+   ckan.plugins = [other plugins] resource_proxy geojson_preview
+

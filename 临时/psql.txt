@@ -1,0 +1,45 @@
+## 安装glances
+$ sudo apt-get install python-pip build-essential python-dev
+$ sudo pip install glances
+
+进入控制台：
+sudo su postgres
+psql [-u postgres]
+
+查看连接数：
+SELECT count(*) FROM (SELECT pg_stat_get_backend_idset() AS backendid) AS s;
+
+
+查看连接详情：
+SELECT * FROM pg_stat_activity;
+
+删除数据库的闲置连接：需要超级管理员用户权限
+SELECT pg_terminate_backend(procpid) FROM pg_stat_activity WHERE current_query='<IDLE>';
+
+pg_terminate_backend是pg的内部方法，另外还有一个叫pg_cancel_backend，这个方法在8.4以前的版本中就一直存在。这两个方法的区别在于：
+pg_cancel_backend    只是取消当前某一个进程的查询操作，但不能释放数据库连接
+pg_terminate_backend    可以在pg的后台杀死这个进程，从而释放出宝贵的连接资源
+
+
+# 查处闲置的连接数
+SELECT count(*) FROM pg_stat_activity WHERE current_query='<IDLE>';
+
+
+
+## 数据库占用空间
+select pg_size_pretty(pg_database_size('postgres'));
+
+
+## 最大连接数修改
+
+# 查看可用内存
+
+# sysctl -a | grep shmall
+kernel.shmall = 2097152  就是 2097152*4k/1024/1024 = 8G 就是说可用共享内存一共 8G
+
+# sysctl -a | grep shmmax
+
+shmmax内核参数定义单个共享内存段的最大值，如果该参数设置小于Oracle SGA设置，那么SGA就会被分配多个共享内存段。这在繁忙的系统中可能成为性能负担，带来系统问题。
+Linux上该参数的缺省值通常为32M。
+kernel.shmmax = 33554432
+

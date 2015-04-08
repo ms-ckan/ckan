@@ -1,0 +1,21 @@
+1. 把ckanext-geometry插件包安装到src目录
+
+2. cd ckanext-geometry
+
+   进入ckan环境...
+
+   安装命令：sudo python setup.py develop
+
+3. 编辑配置文件：vim /etc/ckan/default/production.ini
+
+   ckan.plugins = (others) geometry
+
+4. 初始化数据库：paster --plugin=ckan initdb -c /etc/ckan/default/production.ini
+
+5. 在data_view.js中添加相应的配置，并且在package/resource_read.html中<ul id="data-organization-id" data-organization-id="{{pkg.organization.id}}">
+
+API：
+
+add geometry: /geometry/{organization_id}?spatial=GeoJSON
+
+get geometry: /geometry/organization/{organization_id}

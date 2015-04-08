@@ -1,0 +1,88 @@
+Docker - Build, Ship and Run Any app, Anywhere
+-- An open platform for distributed applications for developers and sysadmins.
+
+Offical: https://www.docker.com/
+
+Docker教程中文版本：https://code.csdn.net/u010702509/docker/file/Docker.md
+
+# Docker简介 
+
+Docker产生的目的就是为了解决以下问题:
+
+1) 环境管理复杂: 从各种OS到各种中间件再到各种App，一款产品能够成功发布，作为开发者需要关心的东西太多，且难于管理，这个问题在软件行业中普遍存在并需要直接面对。Docker可以简化部署多种应用实例工作，比如Web应用、后台应用、数据库应用、大数据应用比如Hadoop集群、消息队列等等都可以打包成一个Image部署。
+
+2) 云计算时代的到来: AWS的成功, 引导开发者将应用转移到云上, 解决了硬件管理的问题，然而软件配置和管理相关的问题依然存在 (AWS cloudformation是这个方向的业界标准, 样例模板可参考这里)。Docker的出现正好能帮助软件开发者开阔思路，尝试新的软件管理方法来解决这个问题。
+
+3) 虚拟化手段的变化: 云时代采用标配硬件来降低成本，采用虚拟化手段来满足用户按需分配的资源需求以及保证可用性和隔离性。然而无论是KVM还是Xen，在 Docker 看来都在浪费资源，因为用户需要的是高效运行环境而非OS, GuestOS既浪费资源又难于管理, 更加轻量级的LXC更加灵活和快速。
+
+4) LXC的便携性: LXC在 Linux 2.6 的 Kernel 里就已经存在了，但是其设计之初并非为云计算考虑的，缺少标准化的描述手段和容器的可便携性，决定其构建出的环境难于分发和标准化管理(相对于KVM之类image和snapshot的概念)。Docker就在这个问题上做出了实质性的创新方法。
+
+# 安装请参考官方文档
+
+Ubuntu Trusty 14.04 LTS 64-bit
+
+$ sudo apt-get update
+$ sudo apt-get install docker.io
+
+$ source /etc/bash_completion.d/docker.io
+$apt-get install apt-transport-https (/usr/lib/apt/methods/https)
+
+$ sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 36A1D7869245C8950F966E92D8576A8BA88D21E9
+$ curl -sSL https://get.docker.com/ubuntu/ | sudo sh
+
+$ sudo docker run -i -t ubuntu /bin/bash
+
+
+
+Step 0 Docker Engine parts
+
+Docker引擎由两部分组成：一个守护进程，管理所有容器的服务器进程；一个客户端，远程控制守护进程。
+
+$docker version
+
+Step 1 Searching for images
+
+可以非常容易的从别人那里使用一个容器镜像。容器镜像可用图像中心注册表，一种基于云的应用程序的集合。
+$ docker search tutorial
+
+Step 2 Downloading container images
+
+容器镜像可以非常容易地使用docker pull 下载。从镜像中心可以指定名称下载。格式为<username>/<repository>
+
+注意：输入完整的名称 docker pull learn/tutorial
+
+Step 3 Hello World
+
+你能想到的容器作为一个进程运行在一个盒子里。盒子包含可能需要的所有进程，如文件系统，系统库，shell等。但这些是默认就运行的。开始你的第一个进程吧。
+
+使用docker run命令运行镜像。最小需要两个参数，1）镜像名称；2）在这个镜像中你想要执行的命令。
+
+Step 4 Installing things
+
+接下来我们安装一个简单的工具，ping，在这个容器中。这个镜像是基于ubuntu的，因此你可以运行apt-get install -y ping命令。注意当命令执行完成后，不要忘记镜像已经被修改了。
+
+
+Step 5 Save your changes
+
+更改后你可能要保存这些修改。从这里开始，Docker保存的这个状态叫做提交（commiting）。提交后会保存旧的镜像和新的镜像之间的区别。
+
+首先使用docker ps -l 找到容器的ID，然后提交这个容器在仓库的名称: learn/ping
+
+命令：docker commit ID 容器名称
+
+Step 6 Run your new image
+
+现在你可以运行自己的容器镜像了。
+
+Step 7 Check your container
+
+你的镜像可以运行了，使用docker ps 我们可以看到一个运行窗口的列表，使用docker inspect我们可以看到更完整的信息。
+
+Step 8 发布你的镜像到Docker hub 中心
+
+你可以检验你的镜像的工作状态，并和别人分享。推荐你下载learn/tutorial镜像从docker hub。通过发布（上传）你的镜像，让其他主机和用户更容易使用。
+
+命令：docker images 显示当前哪台主机
+命令：docker push 发布你的镜像
+
+在模拟器中的用户是“learn”,而你只能把镜像发布到自己的命名空间。

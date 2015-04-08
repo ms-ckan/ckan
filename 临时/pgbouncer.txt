@@ -1,0 +1,115 @@
+1. 什么是pgbouncer
+  PGBouncer是一个轻量级的针对PostgreSQL的数据库连接池工具，能够给客户端提供一个统一的链接视图。
+
+  PgBouncer的作用
+    a.PgBouncer可以在后端数据库和前端应用间建立连接的桥梁，由PgBouncer去处理和后端数据库的连接关系。
+    b.对客户端连接进行限制，预防过多或者恶意的连接请求。
+
+  PgBouncer的特点
+    a.内存消耗低(默认为2k/连接)，因为Bouncer不需要每次都接受完整的数据包
+    b.可以把不同的数据库连接到一个机器上，而对客户端保持透明
+    c.支持在线的重新配置而无须重启
+    d.仅支持V3协议，因此后端版本须>=7.4 (引自pgsqldb中文站)
+
+2、安装
+
+sudo apt-get install pgbouncer（Ubuntu）
+
+dpkg -L "pgbouncer" （查看文件列表）
+
+man 5 pgbouncer（查看使用文档）
+
+运行时用到的两个文件：
+
+pgbouncer -v /etc/pgbouncer/pgbouncer.ini (有日志)
+pgbouncer -d /etc/pgbouncer/pgbouncer.ini (后台运行)
+
+
+配置文件参考：
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Here is my pgbouncer.ini file:
+[databases]
+* = port=5432
+; or kyle = host=10.0.2.19 port=2011 user=postgres password=password
+[pgbouncer]
+logfile = /data/postgresql/pgbouncer.log
+pidfile = /data/postgresql/pgbouncer.pid
+listen_addr = *
+listen_port = 6432
+unix_socket_dir = /var/run/postgresql
+auth_type = trust
+auth_file = /data/postgresql/8.4/main/global/pg_auth
+admin_users = postgres
+stats_users = postgres
+pool_mode = transaction
+server_reset_query = DISCARD ALL;
+server_check_query = select 1
+server_check_delay = 10
+max_client_conn = 1000
+default_pool_size = 20
+log_connections = 1
+log_disconnections = 1
+log_pooler_errors = 1
+
+
+3. 配置
+[databases]
+           pg_template1 = host=127.0.0.1 dbname=template1
+           [pgbouncer]
+           pool_mode = session
+           listen_port = 6543
+           listen_addr = 127.0.0.1
+           auth_type = md5
+           auth_file = users.txt
+           logfile = pgbouncer.log
+           pidfile = pgbouncer.pid
+           admin_users = someuser
+           stats_users = stat_collector
+
+
+上面的配置说明了该pgbouncer创建了针对127.0.0.1上的template1的一个连接池，该连接池对调用方的呈现的数据库名称是pg_template1,它映射到了template1上。所有访问pbbouncer上的pg_template1的请求都会转到template1上完成。
+
+    pool_mode 指明了连接池的模型，pgbouncer目前支持三种连接池模型。分别是session, transaction和statment三个级别。
+    a. session. 会话级链接。只有与当客户端的会话结束时，pgbouncer才会收回已分配的链接
+    b. transaction 事务级连接。当事务完成后，pgbouncer会回收已分配的链接。也就是说客户端只是在事务中才能独占此链接，非事务的对数据库的请求是没有独享的链接的。
+    c. statement 语句级链接。任何对数据库的请求完成后，pgbouncer都会回收链接。此种模式下，客户端不能使用事务，否则会造成数据的不一致。
+    pgbouncer的默认设置是session链接。
+
+    listen_port和listen_addr是pgbouncer监听的地址和端口号。
+
+    auth_type和auth_file是bppgbouncer用以完成客户端身份认证。auth_file中保存用户名和密码，根据验证方式(auth_type)的不同，auth_file的内容也有不同。
+    md5: 基于md5的密码验证，auth_file中需要有普通文本和md5值两种形式的密码；
+    crypt: 基于crypt的密码验证(man 3 crypt), auth_file必须包含文本密码；
+    plain: 明文验证方式；
+    trust: 不进行验证，但auth_file依然需要保存用户名；
+    any: 也不进行验证，而且auth_file中不需要保存用户名了。但此种方式需要在pg_template1中明确说明用户名进行真实数据库的登录。如: pg_template1 = host=127.0.0.1 user=exampleuser dbname=template1.否则会报错的。
+
+    需要说明的是：auth_file中的用户名、密码都必须使用双引号，否则还是报错。
+   
+    logfile和pidfile分别保存log文件和pid文件的路径。
+
+admin_users：列出哪些用户可以登录pgbouncer进行管理，以逗号进行分隔
+    stats_users：列出哪些用户可以登录pgbouncer进行只读操作，如可以列出服务器状态，访问链接等，但是不能执行reload。
+
+
+4. 配置实例
+
+[databases]
+
+* = port = 6000
+
+添加映射：
+[pgbouncer]
+ckan_default = host=127.0.0.1 port=6000 dbname=ckan_default
+datastore_default = host=127.0.0.1 port=6000 dbname=datastore_default
+
+listen_addr = 127.0.0.1
+listen_port = 5432
+
+auth_type = trust
+auth_file = /usr/lib/ckan/pgsql/userlist.txt
+
+admin_users = admin
+stats_users = ckan_default, datastore_default
+
+

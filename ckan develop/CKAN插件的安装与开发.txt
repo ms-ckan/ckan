@@ -1,0 +1,317 @@
+Ideas collection to improve civic data
+
+Some insteresting CKAN plugins from the Federal GSA.
+
+https://github.com/GSA/ckanext-datajson
+https://github.com/GSA/USMetadata
+
+These allow the production of metadata files that makes it easy to have data incorporated into Data.gov communities for cities, counties & states.
+
+
+在CKAN上安装插件的必须条件和相关环境：
+1、必须在CKAN运行的Python virtual environment.
+COMMAND: . /usr/lib/ckan/default/bin/activate
+
+2、CKAN运行时的配置文件
+vim /home/qi/ckan/etc/default/development.ini 
+
+3、CKAN插件安装有两种方式：
+
+    1、手动安装插件安装包：使用命令
+    . /usr/lib/ckan/default/bin/activate
+    cd /usr/lib/ckan/default/src/ckanext-iauthfunctions
+    python setup.py develop
+
+    2、在Github上可以使用：pip 命令安装，如：
+    pip install -e git+https://github.com/gsa/usmetadata#egg=ckanext-usmetadata
+
+4、插件安装完成后，需要在CKAN配置文件中配置：
+ckan.plugins = （other plugins） usmetadata
+
+5、配置完后重启服务
+paster serve /etc/ckan/default/development.ini
+
+以下是安装三个安装包的步骤及说明：
+
+一、安装USMetadata
+
+Github地址：https://github.com/GSA/USMetadata
+
+插件介绍：它提供了一些自定义字段和US Common Core Schema
+项目地址：http://project-open-data.github.io/schema/
+
+安装步骤：
+1）在CKAN运行环境下安装：. /usr/lib/ckan/default/bin/activate
+
+2）使用pip命令安装：pip install -e git+https://github.com/gsa/usmetadata#egg=ckanext-usmetadata
+
+3）在CKAN配置文件中添加:ckan.plugins = (...) usmetadata
+vim /home/qi/ckan/etc/default/development.ini 
+
+==> It's OK!
+
+二、安装：ckanext-datajson
+Github地址：https://github.com/GSA/ckanext-datajson
+
+插件介绍：
+1）可以生成/data.json文件
+2）可以从远程获取数据源 /data.json文件
+3）可以创建一个新的视图，以及在将JSON内容格式化输出
+4）也可以创建一个为 /data.jsonld的视图及类似的JSON-LD格式
+5）也可以用来处理从远程获取的数据集文件 /data.json
+6）也可以用来验证/data.json的文件格式 在：http://127.1/pod/validate
+
+参考站点： http://hub.healthdata.gov.
+
+安装步骤：
+1、下载插件安装包：https://github.com/GSA/ckanext-datajson.git
+将文件移动到CKAN运行环境下的插件目录：/usr/lib/ckan/default/src
+
+注：github文档中没有提供pip的安装方式，此处采用手动安装：
+$ cd ckanext-datajson/
+$ sudo python setup.py develop
+
+完成安装：
+
+2、在CKAN配置文件中添加：ckan.plugins = (...) datajson
+或者 ckan.plugins=(...) datajson harvest datajson_harvest
+
+3、安装完成重启服务器
+paster serve /etc/ckan/default/development.ini
+
+=> 服务器启动出错：No module named jsonschema.exceptions
+
+没有找到jsonschema.exceptions模块，需要手动安装jsonschema模块
+
+解决方案：
+1）下载jsonschema模块：https://pypi.python.org/pypi/jsonschema
+
+2）解压后使用命令安装：python setup.py install
+
+3）默认安装到系统中的Python环境中，但CKAN使用的是自带的Python虚拟环境，所以要通过软链将安装的模块链接到Python虚拟环境中：
+sudo ln -s /usr/local/lib/python2.7/dist-packages/jsonschema \
+    ~/ckan/lib/default/lib/python2.7/dist-packages/
+
+=> It's Ok!
+
+=> 重新启动再报错：No module named harvest.model
+
+需要安装ckanext-harvest插件。
+说明：ckanext-harvest也是一个CKAN插件，可以安装该插件也可以只安装插件的模块。建议安装ckanext-harvest插件。
+
+三、安装: ckanext-harvest - Remote harvesting extension
+
+Github地址：https://github.com/ckan/ckanext-harvest
+
+插件介绍：
+它可以从远程获取数据源信息，并且有图形化界面。
+
+安装步骤：
+1、需要后端支持，有两种可选的后端：
+
+RabbitMQ：sudo apt-get install rabbitmq-server
+
+Redis：sudo apt-get install redis-server
+
+2、在CKAN运行环境中安装该插件，使用pip命令安装：
+pip install -e git+https://github.com/okfn/ckanext-harvest.git@stable#egg=ckanext-harvest
+
+说明：该插件不同的版本，可以指定版本安装。
+
+3、安装该插件所需模块：插件文件中有pip-requirements.txt文件
+pip install -r pip-requirements.txt
+
+4、在CKAN配置文件中配置该插件：
+ckan.plugins=harvest ckan_harvester
+
+5、在CKAN配置文件中配置：默认为"rabbitmq"
+ckan.harvest.mq.type = redis
+
+
+配置必须的数据库文件
+paster --plugin=ckanext-harvest harvester initdb --config=mysite.ini
+
+=> mysite.ini = /etc/ckan/default/development.ini
+
+重启服务：http://localhost:5000/harvest
+打开harvest的图形化界面。
+
+=> harvest 提供一系列的命令行接口及更多harvest的操作请参考Github项目主页。
+
+
+安装完成之后回到ckanext-datajson
+
+此时，插件都是可以正常工作的。
+
+1、缓存配置
+如果是使用Apache服务器，可以在Apache配置文件中添加缓存配置方案
+
+
+2、离线生成 /data.json 文件
+
+在CKAN配置文件中配置
+ckanext.datajson.path = /internal/data.json
+
+可以创建一个crontab任务来从远程URL中下载数据内容
+0-59/10 * * * * wget -qO /path/to/static/data.json http://localhost/internal/data.json
+
+在Apache服务器中，也可以添加相关配置
+
+3、可选项 （Options）
+
+可以自定义URL生成的data.json输出文件：
+ckanext.datajson.path = /data.json
+ckanext.datajsonld.path = /data.jsonld
+ckanext.datajsonld.id = http://www.youragency.gov/data.json
+
+=> 使用harvest 命令时需要安装 redis-py模块
+
+   Github地址：https://github.com/andymccurdy/redis-py
+
+   模块安装并不复杂，但是该模块与其他模块安装有些不一样，安装时并不会自动将redis模块安装到Python环境，虽然可通过软链接指向，但对redis模块的管理不太方便，建议将redis模块复制到Python虚拟环境。
+
+
+   关于harvest的使用，有台湾版教程：
+   http://ckan-docs-tw.readthedocs.org/ja/latest/ckanext-harvest.html
+
+
+邮件服务器安装的地址：http://wiki.ubuntu.com.cn/Postfix
+
+
+==============
+CKAN开发详情篇
+==============
+
+Step1 - Using paster create command to create an "empty" extension from a template.
+
+      . /usr/lib/ckan/default/bin/activate
+
+      cd /usr/lib/ckan/default/src
+
+      paster --plugin=ckan create -t ckanext <ckanext-name>
+
+      提示：使用paster create 命令会默认在src目录下创建一个名为<ckanext-name>的文件夹。
+            也可以通过-o选项来指定插件存放的目录。
+            ckan插件的名称通常使用ckanext-开头。
+
+ckanext-iauthfunctions/
+    ckanext/
+        __init__.py
+        iauthfunctions/
+            __init__.py
+    ckanext_iauthfunctions.egg-info/
+    setup.py
+
+CKAN插件的基本目录形式如上，类似Django项目。
+
+其中setup.py是插件的安装脚本，后面有具体的使用说明。
+
+ckanext_name.egg-info目录中包含自动生成的项目元数据。不需要编辑和查看，也不用添加到版本控制。
+
+ckanext/iauthfunctions是Python包目录，在这里编写代码。
+
+
+Step2 - Creating a plugin class
+
+
+   创建文件：ckanext-iauthfunctions/ckanext/iauthfunctions/plugin.py
+
+   import ckan.plugins as plugins
+
+   class ExampleIAuthFunctionsPlugin(plugins.SingletonPlugin):
+
+      pass
+
+   建议：最好的方式是去看已经写好的插件代码。应该具备较好的Ptyhon基础和Django项目经验。
+
+Step3 - Adding the plugin to setup.py
+
+   编辑 setup.py 文件，添加一个entry_points。插件安装是使用的名称。
+
+   entry_points = """
+   
+     [ ckan.plugins ]
+
+     example_iauthfunctions=ckanext.iauthfunctions.plugin:exampleIAuthFunctionsPlugin
+
+   """,
+
+
+Step4 - Installing the extension
+
+   前提是必须运行在CKAN环境中，才能正确安装。
+
+   . /usr/lib/ckan/default/bin/activate
+
+   cd /usr/lib/ckan/default/src/ckanext-iauthfunctions
+
+   python setup.py develop
+
+   说明：如果是在github的CKAN项目,还有一种方式，通常CKAN extensions会提供下载说明。也可以参见头部的描述。
+
+
+Step5 - Enabling the plugin
+
+   插件必须添加到ckan的配置文件中才能生效。方法如下：
+
+   vim ../ckan/etc/default/development.ini
+
+   ckan.plugins = stats text_preview <example_iauthfunctions>
+
+   然后重启服务即可
+  
+   $ paster serve ../ckan/etc/default/development.ini
+
+
+==================================
+Troubleshooting 一些问题与解决方案
+==================================
+
+1、PluginNotFoundException
+
+   E.g. ckan.plugins.core.PluginNotFoundException: example_iauthfunctions
+
+  -------------
+  a）检查插件名称是否写错。ckan配置文件中的名称必须是setup.py文件中设置的名称。
+
+  b) 检查是否正确运行 python setup.py develop，setup.py 是指创建插件时生成的setup.py文件。
+
+
+2、ImportError
+
+  可能原因很多，但通常会提示错误信息，根据错误信息去解决相关问题。
+
+
+======================
+CKAN Plugin Interfaces
+======================
+
+  写好CKAN插件，需要参数CKAN插件接口，里面包含一些实现与方法说明。
+
+
+Using the plugins toolkit | 使用插件的工具元件
+
+  CKAN的plugin toolkit工具是一个Python模块，包含了一些核心函数、类和异常。
+
+
+================
+Toolkit 工具文档
+================
+
+1、class ckan.plugins.toolkit.BaseController
+
+   CKAN控制器的基类
+
+2、class ckan.plugins.toolkit.CkanCommand
+ 
+   继承并实现CKAN paster命令的基类
+
+3、class ckan.plugins.toolkit.CkanVersionException
+
+   如果必须的CKAN版本是无效的，就会通过requires_ckan_version()方法抛出异常。
+
+
+   更多的请见文档：http://docs.ckan.org/en/ckan-2.2/extensions/plugins-toolkit.html
+
+   
+
