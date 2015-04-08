@@ -1,8 +1,10 @@
-ckan改变的内容列表
+Team are based plugin model to the development and management. Minimize coupling procedure.
+
+Following ckan modified the content:
 
 #### src/who.ini
 
-添加了单点登录功能
+Add the function of single sign-on (sso). Wordpress Login Authenticator.
 
 ```
 plugins =
@@ -11,15 +13,12 @@ plugins =
     ckanext.wordpress.lib.sso_authenticator:SSOAuthenticator #(add this line)
 ```
 
-#### src/production.ini
-
-CKAN的配置文件，随时可能修改
 
 ## src/ckan/ckan
 
 **1) ckan/ckan/logic/action/get.py**
 
-user_list接口调用时，因为要隐藏sysadmin字段，因此在这里做了处理
+Call the API `/api/action/user_list`, default show all fields, but an user story didn't show 'sysadmin' field. Team add a code to remove the field. (not )
 
 ```
 for user in query.all():
@@ -30,7 +29,7 @@ for user in query.all():
 
 **2） ckan/ckan/public/base/javascript/modules/follow.js**
 
-Follow按钮点击时不会自动+1，因此需要修改follow.js解决了这个问题。但将follow.js放到custom_extension目录，则无效。
+Before the follow button click can't plus/minus one. Team modified follow.js to fixed it. But an issue is moved it to custom_extension similar dir inoperative.
 
 ```
 _onClickLoaded: function(json) {
@@ -55,21 +54,21 @@ _onClickLoaded: function(json) {
 
 **3) ckan/ckan/model/user.py**
 
-修改了用户块，为了更快的完成加载
+Rewrite query, to provide response speed. #(Optional, Performance Optimization)
 
 ```
-    def number_of_edits(self):
-        # have to import here to avoid circular imports
-        import ckan.model as model
-        from sqlalchemy import func
-        revisions_q = meta.Session.query(func.count(model.Revision.id)).select_from(model.Revision)
-        revisions_q = revisions_q.filter_by(author=self.name)
-        return revisions_q.scalar()
+def number_of_edits(self):
+    # have to import here to avoid circular imports
+    import ckan.model as model
+    from sqlalchemy import func
+    revisions_q = meta.Session.query(func.count(model.Revision.id)).select_from(model.Revision)
+    revisions_q = revisions_q.filter_by(author=self.name)
+    return revisions_q.scalar()
 ```
 
 4) ckan/ckan/model/activity.py
 
-修改用户流，为了更改的完成加载
+Rewrite query, to provide response speed. #(Optional, Performance Optimization)
 
 ```
 def _user_activity_query(user_id):
@@ -82,23 +81,55 @@ def _user_activity_query(user_id):
 
 ## src/ckan/ckanext
 
-#### datastore
+#### 1. datastore
 
-新增用户接口，必须修改
+Datastore API, some modified and add new APIs.
 
-#### reclinepreview
+###### Modfied e.g.
 
-Grid, Graph, Map的开发，必须修改
+1. Maximum download records can be configured.
+2. Sorting the donwload file by _id ASC.
 
-#### stats
+```
+data_dict = {
+        'resource_id': resource_id,
+        'limit': request.GET.get('limit', config.get('ckan.limit', '500000')), # modified
+        'offset': request.GET.get('offset', 0),
+        'sort': request.GET.get('sort', '_id ASC') #add
+    }
+```
 
-修改统计记录，必须修改。但该插件可以移除，效果不大。
+###### Add new APIs.
+
+**/api/action/datastore_search_sql**
+
+Custom search sql, because datastore_search API can't meet demand. So team add the API.
+
+**/api/action/datastore_delete_sql**
+
+Custom delete sql, to privode admin portal.
+
+**/datastore/json/{resource_id}**
+
+Download as json file, the api similar with download as csv file.
+
+###### Why can't extract?
+
+Datastore is ckan offical extension and provides a number of APIs. API implementation has a strong dependence, authorize and logic. So team can't extract it, and upgrade should compare code and testing.
+
+
+#### 2. reclinepreview
+
+Ckan offical extension, the Grid, Graph and Map's development and implementation.
+
+#### 3. stats
+
+Ckan offical extension, website analysis and statistics.
 
 ## src/ckanext-spatial
+
+To solve geojson_preview cross-domain issues, modified the geojson_preview.js
 
 ```
 src\ckanext-spatial\ckanext\spatial\public\js\geojson_preview.js
 ```
-
-为了支持geojson_preview出现的跨域问题，新增/ckanext/cors接口解决这个问题。因此需要修改geojson_preview.js。
-
